@@ -8,6 +8,15 @@
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
 
+  <!-- Font Awesome CDN (latest brand icons) -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    integrity="sha512-Z7qC4n8K2qD6Thk4+I9yWbDkWHD5+Ymt0iVNx9tM1ULF7V1mgPYHwceg2MSB6J0S7n6lBzQ1gLPt6dxx+5x5Yw=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
   <style>
     * {
       margin: 0;
@@ -102,21 +111,22 @@
     }
 
     .socials {
-      margin-top: 28px;
+      margin-top: 35px;
       display: flex;
       justify-content: center;
-      gap: 28px;
+      gap: 30px;
     }
 
     .socials a {
-      color: #aaa;
-      font-size: 1.6em;
-      transition: 0.3s;
+      color: #b8b8b8;
+      font-size: 1.8rem;
+      text-decoration: none;
+      transition: color 0.3s, transform 0.3s;
     }
 
     .socials a:hover {
       color: #7c3aed;
-      transform: translateY(-3px);
+      transform: scale(1.2);
     }
 
     .email {
@@ -144,16 +154,13 @@
     <a href="https://welate.gumroad.com/l/theson" class="link" target="_blank">Drumkit (Gumroad)</a>
 
     <div class="socials">
-      <a href="https://www.instagram.com/christonwords/" target="_blank"><i class="fab fa-instagram"></i></a>
-      <a href="https://www.tiktok.com/@christonwords" target="_blank"><i class="fab fa-tiktok"></i></a>
-      <a href="https://x.com/christonwords" target="_blank"><i class="fab fa-twitter"></i></a>
+      <a href="https://www.instagram.com/christonwords/" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+      <a href="https://www.tiktok.com/@christonwords" target="_blank" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+      <a href="https://x.com/christonwords" target="_blank" aria-label="Twitter / X"><i class="fa-brands fa-x-twitter"></i></a>
     </div>
 
     <div class="email">softparish@gmail.com</div>
   </div>
-
-  <!-- FontAwesome Icons -->
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
 </body>
 </html>
