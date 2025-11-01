@@ -5,11 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Links</title>
 
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
-
-  <!-- Font Awesome (via jsDelivr, safer for GitHub Pages) -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
 
   <style>
     * {
@@ -27,23 +23,6 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
-      position: relative;
-    }
-
-    body::before {
-      content: "";
-      position: absolute;
-      width: 150%;
-      height: 150%;
-      background: radial-gradient(circle, rgba(88,0,255,0.1), rgba(0,0,0,0.1));
-      animation: pulse 6s ease-in-out infinite alternate;
-      z-index: 0;
-    }
-
-    @keyframes pulse {
-      from { transform: scale(1); opacity: 0.6; }
-      to { transform: scale(1.1); opacity: 0.9; }
     }
 
     .container {
@@ -55,9 +34,6 @@
       backdrop-filter: blur(12px);
       max-width: 440px;
       width: 90%;
-      position: relative;
-      z-index: 2;
-      animation: fadeIn 1.2s ease forwards;
     }
 
     h1 {
@@ -93,47 +69,18 @@
       margin: 20px 0;
       border-radius: 12px;
       overflow: hidden;
-      transition: transform 0.3s ease;
     }
 
-    .image-link:hover { transform: scale(1.05); }
-
-    img {
+    .image-link img {
       width: 100%;
       border-radius: 12px;
       border: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .socials {
-      margin-top: 35px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 30px;
-      min-height: 50px; /* ensures visible space */
-    }
-
-    .socials a {
-      color: #b8b8b8;
-      font-size: 1.8rem;
-      transition: color 0.3s, transform 0.3s;
-      text-decoration: none;
-    }
-
-    .socials a:hover {
-      color: #7c3aed;
-      transform: scale(1.2);
     }
 
     .email {
       margin-top: 30px;
       font-size: 0.9em;
       color: #999;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
@@ -142,18 +89,17 @@
   <div class="container">
     <h1>Links</h1>
 
-    <a href="https://www.beatstars.com/christonnn" class="link" target="_blank">BeatStars</a>
+    <a href="https://www.beatstars.com/yourbeatstarspage" class="link" target="_blank">BeatStars</a>
 
     <a href="https://welate.gumroad.com/l/theson" class="image-link" target="_blank">
       <img src="drumkit.jpg" alt="Drumkit">
     </a>
     <a href="https://welate.gumroad.com/l/theson" class="link" target="_blank">Drumkit (Gumroad)</a>
 
-    <div class="socials">
-      <a href="https://www.instagram.com/christonwords/" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-      <a href="https://www.tiktok.com/@christonwords" target="_blank" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
-      <a href="https://x.com/christonwords" target="_blank" aria-label="X / Twitter"><i class="fa-brands fa-x-twitter"></i></a>
-    </div>
+    <!-- Social buttons styled exactly like BeatStars -->
+    <a href="https://www.instagram.com/christonwords/" class="link" target="_blank">Instagram</a>
+    <a href="https://www.tiktok.com/@christonwords" class="link" target="_blank">TikTok</a>
+    <a href="https://x.com/christonwords" class="link" target="_blank">X (Twitter)</a>
 
     <div class="email">softparish@gmail.com</div>
   </div>
