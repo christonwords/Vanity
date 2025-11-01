@@ -8,14 +8,8 @@
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
 
-  <!-- Font Awesome CDN (latest brand icons) -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    integrity="sha512-Z7qC4n8K2qD6Thk4+I9yWbDkWHD5+Ymt0iVNx9tM1ULF7V1mgPYHwceg2MSB6J0S7n6lBzQ1gLPt6dxx+5x5Yw=="
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  />
+  <!-- Font Awesome (via jsDelivr, safer for GitHub Pages) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
 
   <style>
     * {
@@ -114,14 +108,16 @@
       margin-top: 35px;
       display: flex;
       justify-content: center;
+      align-items: center;
       gap: 30px;
+      min-height: 50px; /* ensures visible space */
     }
 
     .socials a {
       color: #b8b8b8;
       font-size: 1.8rem;
-      text-decoration: none;
       transition: color 0.3s, transform 0.3s;
+      text-decoration: none;
     }
 
     .socials a:hover {
@@ -156,7 +152,7 @@
     <div class="socials">
       <a href="https://www.instagram.com/christonwords/" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
       <a href="https://www.tiktok.com/@christonwords" target="_blank" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
-      <a href="https://x.com/christonwords" target="_blank" aria-label="Twitter / X"><i class="fa-brands fa-x-twitter"></i></a>
+      <a href="https://x.com/christonwords" target="_blank" aria-label="X / Twitter"><i class="fa-brands fa-x-twitter"></i></a>
     </div>
 
     <div class="email">softparish@gmail.com</div>
