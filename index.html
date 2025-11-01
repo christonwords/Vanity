@@ -181,11 +181,9 @@
   </style>
 </head>
 <body>
-
   <!-- Background Music -->
-  <audio id="bgMusic" loop preload="auto">
+  <audio id="bgMusic" preload="auto" loop>
     <source src="song.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
   </audio>
 
   <!-- Play overlay -->
@@ -215,31 +213,38 @@
 
   <button id="muteBtn" title="Toggle Sound">🔊</button>
 
-  <!-- FontAwesome -->
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
   <script>
-    const audio = document.getElementById('bgMusic');
-    const muteBtn = document.getElementById('muteBtn');
-    const playOverlay = document.getElementById('playOverlay');
-    const playBtn = document.getElementById('playBtn');
+    // Wait until the entire DOM is ready before binding
+    document.addEventListener('DOMContentLoaded', () => {
+      const audio = document.getElementById('bgMusic');
+      const playOverlay = document.getElementById('playOverlay');
+      const playBtn = document.getElementById('playBtn');
+      const muteBtn = document.getElementById('muteBtn');
 
-    playBtn.addEventListener('click', async () => {
-      try {
-        await audio.play();
-        playOverlay.style.opacity = '0';
-        setTimeout(() => { playOverlay.style.display = 'none'; }, 400);
-      } catch (err) {
-        console.error('Playback failed:', err);
-        playBtn.textContent = 'Try Again';
-      }
-    });
+      // Lower initial volume
+      audio.volume = 0.6;
 
-    muteBtn.addEventListener('click', () => {
-      audio.muted = !audio.muted;
-      muteBtn.textContent = audio.muted ? '🔇' : '🔊';
+      playBtn.addEventListener('click', async () => {
+        try {
+          console.log('Button clicked');
+          await audio.play();
+          console.log('Audio started');
+          playOverlay.style.transition = 'opacity 0.5s ease';
+          playOverlay.style.opacity = '0';
+          setTimeout(() => { playOverlay.style.display = 'none'; }, 500);
+        } catch (err) {
+          console.error('Playback failed:', err);
+          playBtn.textContent = 'Try Again';
+        }
+      });
+
+      muteBtn.addEventListener('click', () => {
+        audio.muted = !audio.muted;
+        muteBtn.textContent = audio.muted ? '🔇' : '🔊';
+      });
     });
   </script>
-
 </body>
 </html>
