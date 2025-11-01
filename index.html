@@ -182,17 +182,43 @@
 </head>
 <body>
 
-  <!-- Background Music -->
-  <audio id="bgMusic" loop>
-    <source src="song.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-  </audio>
+<!-- Background Music -->
+<audio id="bgMusic" loop preload="auto">
+  <source src="song.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
 
-  <!-- Play overlay -->
-  <div id="playOverlay">
-    <p style="margin-bottom: 10px; font-size: 1.1em; color: #aaa;">Click to enter</p>
-    <button id="playBtn">Enter Site</button>
-  </div>
+<!-- Play overlay -->
+<div id="playOverlay">
+  <p style="margin-bottom: 10px; font-size: 1.1em; color: #aaa;">Click to enter</p>
+  <button id="playBtn">Enter Site</button>
+</div>
+
+<script>
+  const audio = document.getElementById('bgMusic');
+  const muteBtn = document.getElementById('muteBtn');
+  const playOverlay = document.getElementById('playOverlay');
+  const playBtn = document.getElementById('playBtn');
+
+  // Ensure the audio can start reliably after user gesture
+  playBtn.addEventListener('click', async () => {
+    try {
+      await audio.play();
+      playOverlay.style.opacity = '0';
+      setTimeout(() => { playOverlay.style.display = 'none'; }, 400);
+    } catch (err) {
+      console.error('Playback failed:', err);
+      playBtn.textContent = 'Try Again';
+    }
+  });
+
+  // Allow toggling mute anytime
+  muteBtn.addEventListener('click', () => {
+    audio.muted = !audio.muted;
+    muteBtn.textContent = audio.muted ? '🔇' : '🔊';
+  });
+</script>
+
 
   <div class="container">
     <h1>Links</h1>
