@@ -125,55 +125,6 @@
       color: #999;
     }
 
-    #muteBtn {
-      position: fixed;
-      bottom: 25px;
-      right: 25px;
-      background: rgba(255,255,255,0.1);
-      border: none;
-      color: #fff;
-      font-size: 1.1em;
-      border-radius: 50%;
-      width: 45px;
-      height: 45px;
-      cursor: pointer;
-      transition: 0.3s;
-      z-index: 3;
-    }
-
-    #muteBtn:hover {
-      background: rgba(255,255,255,0.25);
-    }
-
-    #playOverlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.8);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      flex-direction: column;
-      z-index: 10;
-      transition: opacity 0.4s ease;
-    }
-
-    #playOverlay button {
-      background: linear-gradient(135deg, #6a00ff, #3a3a3a);
-      color: #fff;
-      border: none;
-      padding: 14px 24px;
-      border-radius: 8px;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    #playOverlay button:hover {
-      background: linear-gradient(135deg, #3a3a3a, #6a00ff);
-    }
-
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
@@ -181,16 +132,6 @@
   </style>
 </head>
 <body>
-  <!-- Background Music -->
-  <audio id="bgMusic" preload="auto" loop>
-    <source src="song.mp3" type="audio/mpeg">
-  </audio>
-
-  <!-- Play overlay -->
-  <div id="playOverlay">
-    <p style="margin-bottom: 10px; font-size: 1.1em; color: #aaa;">Click to enter</p>
-    <button id="playBtn">Enter Site</button>
-  </div>
 
   <div class="container">
     <h1>Links</h1>
@@ -211,40 +152,8 @@
     <div class="email">softparish@gmail.com</div>
   </div>
 
-  <button id="muteBtn" title="Toggle Sound">🔊</button>
-
+  <!-- FontAwesome Icons -->
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
-  <script>
-    // Wait until the entire DOM is ready before binding
-    document.addEventListener('DOMContentLoaded', () => {
-      const audio = document.getElementById('bgMusic');
-      const playOverlay = document.getElementById('playOverlay');
-      const playBtn = document.getElementById('playBtn');
-      const muteBtn = document.getElementById('muteBtn');
-
-      // Lower initial volume
-      audio.volume = 0.6;
-
-      playBtn.addEventListener('click', async () => {
-        try {
-          console.log('Button clicked');
-          await audio.play();
-          console.log('Audio started');
-          playOverlay.style.transition = 'opacity 0.5s ease';
-          playOverlay.style.opacity = '0';
-          setTimeout(() => { playOverlay.style.display = 'none'; }, 500);
-        } catch (err) {
-          console.error('Playback failed:', err);
-          playBtn.textContent = 'Try Again';
-        }
-      });
-
-      muteBtn.addEventListener('click', () => {
-        audio.muted = !audio.muted;
-        muteBtn.textContent = audio.muted ? '🔇' : '🔊';
-      });
-    });
-  </script>
 </body>
 </html>
