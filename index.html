@@ -2,218 +2,301 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <title>CHRISTON</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>CHRISTON — Links</title>
 
-  <!-- Fonts: graffiti-style for headings + clean sans for UI -->
-  <link href="https://fonts.googleapis.com/css2?family=Rubik+Spray+Paint&family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Rubik+Spray+Paint&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
-    /* --- Base reset --- */
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; }
+
     body {
-      margin: 0;
-      background: radial-gradient(1200px 800px at 50% -10%, #1a1a1a 0%, #0b0b0b 45%, #000 100%);
-      color: #f4f4f4;
-      font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      line-height: 1.5;
+      font-family: "Inter", system-ui, sans-serif;
+      color: #fff;
+      background: radial-gradient(1200px 800px at 50% -20%, #1a1f3a 0%, #07080f 45%, #000 100%);
+      overflow-x: hidden;
+      animation: fadeIn 1.2s ease forwards;
     }
 
-    /* Subtle film grain */
-    body::after {
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Animated light beams */
+    body::before {
       content: "";
       position: fixed;
       inset: 0;
+      background:
+        radial-gradient(600px 400px at 60% 0%, rgba(120,140,255,0.18), transparent 70%),
+        radial-gradient(400px 300px at 40% 10%, rgba(120,140,255,0.08), transparent 70%);
       pointer-events: none;
-      opacity: 0.08;
-      background-image:
-        repeating-linear-gradient(0deg, rgba(255,255,255,.02) 0 2px, transparent 2px 4px),
-        repeating-linear-gradient(90deg, rgba(255,255,255,.015) 0 2px, transparent 2px 4px);
-      mix-blend-mode: screen;
+      animation: beams 8s ease-in-out infinite alternate;
+      z-index: 0;
     }
 
-    /* --- Layout --- */
+    @keyframes beams {
+      from { opacity: .5; }
+      to { opacity: .9; }
+    }
+
     .wrap {
-      max-width: 760px;
-      padding: 56px 20px 72px;
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
       margin: 0 auto;
+      padding: 56px 24px 160px;
     }
 
-    header {
+    /* NAV */
+    .nav {
       display: flex;
-      align-items: flex-end;
       justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 28px;
+      margin-bottom: 120px;
     }
 
     .brand {
       font-family: "Rubik Spray Paint", system-ui;
-      letter-spacing: 1px;
-      color: #fff;
-      font-size: clamp(32px, 6vw, 56px);
-      line-height: 0.95;
-      text-transform: uppercase;
-      text-shadow: 0 0 0.4px #fff, 0 0 20px rgba(255,255,255,.06);
+      font-size: 40px;
+      letter-spacing: 2px;
     }
 
-    /* --- Announcement banner --- */
-    .banner {
+    /* HERO */
+    .hero {
+      max-width: 760px;
+    }
+
+    .pill {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      padding: 10px 14px;
-      border: 1.5px solid #fff;
-      color: #fff;
-      background: #000;
+      padding: 9px 16px;
       border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.25);
       font-size: 14px;
-      white-space: nowrap;
+      margin-bottom: 22px;
     }
-    .banner b { letter-spacing: 0.4px; }
-    .banner a {
-      color: #000;
-      background: #fff;
-      padding: 6px 10px;
-      border-radius: 999px;
-      text-decoration: none;
-      font-weight: 700;
+
+    h1 {
+      font-size: clamp(36px, 6vw, 68px);
+      line-height: 1.05;
+      margin-bottom: 18px;
+      font-weight: 800;
     }
-    .banner button {
-      appearance: none;
-      border: 0;
-      background: transparent;
-      color: #999;
+
+    .sub {
+      color: #b9c0ff;
       font-size: 18px;
-      cursor: pointer;
-      line-height: 1;
-      padding: 0 2px 0 4px;
-    }
-
-    /* --- Card (light glass) --- */
-    .card {
-      margin-top: 26px;
-      border-radius: 20px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      backdrop-filter: blur(8px);
-      padding: clamp(18px, 3.5vw, 28px);
-    }
-
-    .title {
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: #e9e9e9;
-      font-size: 15px;
-      margin: 0 0 18px;
+      max-width: 540px;
+      margin-bottom: 36px;
       opacity: .9;
     }
 
-    /* --- Links grid (spaced, not boxed) --- */
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+
+    .btn {
+      padding: 14px 26px;
+      border-radius: 14px;
+      font-weight: 800;
+      text-decoration: none;
+      border: 2px solid #fff;
+      color: #000;
+      background: #fff;
+      transition: .2s;
+    }
+
+    .btn.outline {
+      background: transparent;
+      color: #fff;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 40px rgba(120,140,255,.35);
+    }
+
+    /* Floating stat cards */
+    .float-cards {
+      position: absolute;
+      right: 40px;
+      top: 320px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-18px); }
+    }
+
+    .stat-card {
+      padding: 16px 18px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.18);
+      font-size: 14px;
+      backdrop-filter: blur(10px);
+    }
+
+    /* LINKS GRID */
     .links {
+      margin-top: 120px;
       display: grid;
       grid-template-columns: 1fr;
-      gap: 18px;            /* spacing between buttons */
-      margin: 12px 0 6px;
+      gap: 18px;
+      max-width: 520px;
     }
 
-    /* Button style: monochrome, outlined, roomy */
     .link {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
       text-decoration: none;
-      color: #f7f7f7;
-      padding: 14px 18px;
+      color: #fff;
+      padding: 16px 20px;
       border-radius: 14px;
-      border: 2px solid #fff;
-      background: transparent;
-      font-weight: 700;
-      letter-spacing: .3px;
-      transition: transform .15s ease, background .15s ease, color .15s ease, box-shadow .15s ease;
-      box-shadow: 0 0 0 rgba(255,255,255,0);
-    }
-    .link:hover {
-      background: #fff;
-      color: #000;
-      transform: translateY(-2px);
-      box-shadow: 0 10px 26px rgba(255,255,255,.06);
+      background: linear-gradient(135deg, rgba(255,255,255,.1), rgba(255,255,255,.02));
+      border: 1px solid rgba(255,255,255,.2);
+      font-weight: 800;
+      text-align: center;
+      transition: .2s;
+      backdrop-filter: blur(10px);
     }
 
-    /* Image link (drumkit) */
+    .link:hover {
+      background: linear-gradient(135deg, rgba(120,140,255,.35), rgba(255,255,255,.05));
+      transform: translateY(-2px);
+      box-shadow: 0 20px 50px rgba(120,140,255,.25);
+    }
+
+    /* DRUMKIT FEATURE */
     .image-link {
       display: block;
+      margin-top: 40px;
+      max-width: 360px;
+      border-radius: 18px;
       overflow: hidden;
-      border-radius: 16px;
-      border: 1.5px solid rgba(255,255,255,.2);
-      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
-    }
-    .image-link img {
-      display: block;
-      width: 100%;
-      height: auto;
-      filter: grayscale(100%) contrast(110%);
-    }
-    .image-link:hover {
-      transform: translateY(-2px);
-      border-color: #fff;
-      box-shadow: 0 18px 40px rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.25);
+      transition: .2s;
     }
 
-    /* Footer / email */
+    .image-link img {
+      width: 100%;
+      display: block;
+      filter: grayscale(100%) contrast(110%);
+    }
+
+    .image-link:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 25px 60px rgba(120,140,255,.25);
+    }
+
     .footer {
-      margin-top: 26px;
-      color: #bdbdbd;
+      margin-top: 80px;
+      color: #aaa;
       font-size: 14px;
-      text-align: center;
       opacity: .85;
     }
 
-    /* Responsive: two columns for buttons on wider screens */
+    /* MINI MUSIC BAR */
+    .player {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,.65);
+      border: 1px solid rgba(255,255,255,.25);
+      backdrop-filter: blur(12px);
+      padding: 10px 16px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 5;
+    }
+
+    .player button {
+      background: white;
+      color: black;
+      border: none;
+      border-radius: 999px;
+      padding: 6px 12px;
+      cursor: pointer;
+      font-weight: 800;
+    }
+
     @media (min-width: 640px) {
-      .links {
-        grid-template-columns: 1fr 1fr;
-      }
+      .links { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
 <body>
+
+  <audio id="track" src="song.mp3"></audio>
+
   <div class="wrap">
 
-    <header>
+    <!-- NAV -->
+    <div class="nav">
       <div class="brand">CHRISTON</div>
+    </div>
 
-      <!-- Compact, non-clustered announcement -->
-      <div class="banner" id="banner">
-        <span><b>Freshman</b> — mixtape out now</span>
-        <a href="https://ffm.to/freshmanmixtape" target="_blank" rel="noopener">Listen</a>
-        <button aria-label="Dismiss banner" onclick="document.getElementById('banner').style.display='none'">×</button>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="pill">Freshman — Fully Produced & Performed By Me</div>
+
+      <h1>New Mixtape Out Now.<br>Welcome to My World.</h1>
+
+      <p class="sub">Producer & Artist. PEACE. Raw sound.</p>
+
+      <div class="cta-row">
+        <a href="https://ffm.to/freshmanmixtape" class="btn" target="_blank">Listen Now</a>
+        <a href="#links" class="btn outline">My Links</a>
       </div>
-    </header>
-
-    <section class="card">
-      <h2 class="title">Links</h2>
-
-      <!-- Your feature image / kit -->
-      <a class="image-link" href="https://payhip.com/b/rso1g" target="_blank" rel="noopener">
-        <img src="drumkit.jpg" alt="The Son — Drumkit artwork">
-      </a>
-
-      <!-- Spacious buttons -->
-      <nav class="links">
-        <a class="link" href="https://ffm.to/freshmanmixtape" target="_blank" rel="noopener">FRESHMAN MIXTAPE</a>
-        <a class="link" href="https://www.beatstars.com/christonnn" target="_blank" rel="noopener">BeatStars</a>
-        <a class="link" href="https://payhip.com/b/rso1g" target="_blank" rel="noopener">Drumkit (The Son)</a>
-        <a class="link" href="https://www.instagram.com/christonwords/" target="_blank" rel="noopener">Instagram</a>
-        <a class="link" href="https://www.tiktok.com/@christonwords" target="_blank" rel="noopener">TikTok</a>
-        <a class="link" href="https://x.com/christonwords" target="_blank" rel="noopener">X (Twitter)</a>
-      </nav>
-
-      <div class="footer">softparish@gmail.com</div>
     </section>
 
+    <!-- FLOATING STATS -->
+    <div class="float-cards">
+      <div class="stat-card">150M+ Streams</div>
+      <div class="stat-card">120+ Drumkit Users</div>
+      <div class="stat-card">Freshman Out Now</div>
+    </div>
+
+    <!-- DRUMKIT FEATURE -->
+    <a class="image-link" href="https://payhip.com/b/rso1g" target="_blank">
+      <img src="drumkit.jpg" alt="Drumkit">
+    </a>
+
+    <!-- LINKS -->
+    <section id="links">
+      <div class="links">
+        <a class="link" href="https://ffm.to/freshmanmixtape" target="_blank">🎧 Freshman Mixtape</a>
+        <a class="link" href="https://www.beatstars.com/christonnn" target="_blank">🎛 BeatStars</a>
+        <a class="link" href="https://payhip.com/b/rso1g" target="_blank">🥁 Drumkit (The Son)</a>
+        <a class="link" href="https://www.instagram.com/christonwords/" target="_blank">Instagram</a>
+        <a class="link" href="https://www.tiktok.com/@christonwords" target="_blank">TikTok</a>
+        <a class="link" href="https://x.com/christonwords" target="_blank">X (Twitter)</a>
+      </div>
+    </section>
+
+    <div class="footer">softparish@gmail.com</div>
+
   </div>
+
+  <!-- MINI PLAYER -->
+  <div class="player">
+    <span>▶ Freshman</span>
+    <button onclick="document.getElementById('track').play()">Play</button>
+    <button onclick="document.getElementById('track').pause()">Pause</button>
+  </div>
+
 </body>
 </html>
