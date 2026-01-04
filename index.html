@@ -5,288 +5,298 @@
 <title>CHRISTON</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-:root{
-  --bg:#ffffff;
-  --text:#000000;
-  --muted:#666;
-  --accent:#00bcd4;
-  --border:#000000;
-}
-
 *{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
 
 body{
   font-family:Inter,system-ui,sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  line-height:1.4;
+  color:#fff;
+  background:black;
+  overflow-x:hidden;
 }
 
-a{text-decoration:none;color:inherit}
+video{
+  position:fixed;
+  top:0;left:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  z-index:-3;
+  filter:brightness(.4) contrast(110%);
+}
+
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  background-image:
+    repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0 2px,transparent 2px 4px),
+    repeating-linear-gradient(90deg,rgba(255,255,255,.015) 0 2px,transparent 2px 4px);
+  opacity:.12;
+  pointer-events:none;
+  z-index:-2;
+}
 
 .wrap{
   max-width:1200px;
   margin:0 auto;
-  padding:32px 24px 120px;
+  padding:64px 24px 140px;
 }
 
-/* NAV */
 .nav{
-  position:sticky;
-  top:0;
-  background:white;
-  z-index:10;
   display:flex;
   justify-content:space-between;
-  align-items:center;
-  padding:18px 0;
-  border-bottom:2px solid var(--border);
+  margin-bottom:110px;
 }
 
 .brand{
   font-weight:900;
-  letter-spacing:2px;
-  font-size:22px;
+  letter-spacing:3px;
+  font-size:28px;
 }
 
-.nav a{
-  margin-left:28px;
-  font-weight:800;
-  position:relative;
+.hero{max-width:760px}
+
+.pill{
+  display:inline-flex;
+  padding:10px 18px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.25);
+  background:rgba(255,255,255,.07);
+  font-size:14px;
+  margin-bottom:24px;
 }
 
-.nav a::after{
-  content:"";
-  position:absolute;
-  left:0;
-  bottom:-6px;
-  width:0;
-  height:2px;
-  background:var(--accent);
-  transition:.2s;
-}
-
-.nav a:hover::after{width:100%}
-
-/* HERO */
-.hero{
-  padding:96px 0 72px;
-  max-width:800px;
-}
-
-.hero h1{
-  font-size:clamp(44px,6vw,72px);
-  font-weight:900;
+h1{
+  font-size:clamp(36px,7vw,68px);
+  line-height:1.05;
   margin-bottom:18px;
+  font-weight:900;
 }
 
-.hero p{
+.sub{
+  color:#cfd3ff;
   font-size:18px;
-  color:var(--muted);
+  max-width:540px;
   margin-bottom:36px;
 }
 
-.cta{
+.cta-row{
   display:flex;
-  gap:18px;
   flex-wrap:wrap;
+  gap:16px;
+  margin-bottom:36px;
 }
 
 .btn{
-  padding:16px 28px;
-  border:3px solid var(--border);
-  font-weight:900;
-  background:white;
-  cursor:pointer;
+  padding:14px 26px;
+  border-radius:14px;
+  font-weight:800;
+  border:2px solid #fff;
+  background:#fff;
+  color:black;
+  text-decoration:none;
   transition:.2s;
 }
 
-.btn.primary{
-  background:var(--text);
+.btn.outline{
+  background:transparent;
   color:white;
 }
 
 .btn:hover{
   transform:translateY(-2px);
-  box-shadow:0 12px 30px rgba(0,0,0,.15);
+  box-shadow:0 15px 40px rgba(130,150,255,.35);
 }
 
-/* subtle pulse */
-.pulse{
-  animation:pulse 4s ease-in-out infinite;
-}
-
-@keyframes pulse{
-  0%,100%{opacity:1}
-  50%{opacity:.65}
-}
-
-/* SECTIONS */
-section{
-  margin-top:96px;
-}
-
-.section-title{
-  font-size:32px;
-  font-weight:900;
-  margin-bottom:32px;
-}
-
-/* STATS */
-.stats{
+/* ✅ FIXED STATS */
+.float-cards{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:18px;
-  margin-bottom:36px;
+  gap:14px;
+  margin-top:24px;
 }
 
-.stat{
-  border:2px solid var(--border);
-  padding:20px;
-  font-weight:900;
+.stat-card{
+  padding:14px 16px;
+  border-radius:14px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.2);
+  font-size:14px;
+  backdrop-filter:blur(10px);
 }
 
-/* BEATS */
-.pricing{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:24px;
+/* Desktop float */
+@media(min-width:900px){
+  .float-cards{
+    position:absolute;
+    right:40px;
+    top:300px;
+    animation:float 6s ease-in-out infinite;
+  }
 }
 
-.price-card{
-  border:3px solid var(--border);
-  padding:28px;
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-18px)}
 }
 
-.price-card h3{
-  font-size:22px;
-  margin-bottom:12px;
+.image-link{
+  display:block;
+  margin-top:48px;
+  max-width:360px;
+  border-radius:18px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.25);
+  transition:.2s;
 }
 
-.price{
-  font-size:32px;
-  font-weight:900;
-  margin-bottom:16px;
+.image-link img{
+  width:100%;
+  filter:grayscale(100%) contrast(110%);
 }
 
-.price-card ul{
-  margin-bottom:24px;
+.image-link:hover{
+  transform:translateY(-4px);
+  box-shadow:0 25px 60px rgba(130,150,255,.25);
 }
 
-.price-card li{
-  list-style:none;
-  margin-bottom:8px;
-  font-weight:700;
-}
-
-/* LINKS */
 .links{
+  margin-top:96px;
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  grid-template-columns:1fr;
   gap:18px;
+  max-width:520px;
 }
 
 .link{
-  border:2px solid var(--border);
-  padding:16px;
-  font-weight:900;
+  text-decoration:none;
+  color:white;
+  padding:16px 20px;
+  border-radius:14px;
+  background:linear-gradient(135deg,rgba(255,255,255,.1),rgba(255,255,255,.02));
+  border:1px solid rgba(255,255,255,.2);
+  font-weight:800;
   text-align:center;
   transition:.2s;
 }
 
 .link:hover{
-  background:var(--accent);
-  color:black;
+  background:linear-gradient(135deg,rgba(130,150,255,.35),rgba(255,255,255,.05));
+  transform:translateY(-2px);
+  box-shadow:0 20px 50px rgba(130,150,255,.25);
 }
 
-/* FOOTER */
-footer{
-  margin-top:120px;
-  border-top:2px solid var(--border);
-  padding-top:32px;
-  font-weight:700;
+.footer{
+  margin-top:72px;
+  color:#aaa;
+  font-size:14px;
+  opacity:.85;
+}
+
+/* ✅ LOADING INTRO */
+#loader{
+  position:fixed;
+  inset:0;
+  background:black;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:26px;
+  font-weight:900;
+  letter-spacing:4px;
+  z-index:99;
+  animation:fadeOut 1s ease forwards;
+  animation-delay:1.6s;
+}
+
+@keyframes fadeOut{
+  to{opacity:0;pointer-events:none}
+}
+
+/* ✅ SCROLL REVEAL */
+.reveal{opacity:0;transform:translateY(20px);transition:.7s ease}
+.reveal.active{opacity:1;transform:none}
+
+@media(min-width:640px){
+  .links{grid-template-columns:1fr 1fr}
 }
 </style>
 </head>
-
 <body>
+
+<!-- ✅ VIDEO BACKGROUND -->
+<video autoplay muted loop playsinline>
+  <source src="background.mp4" type="video/mp4">
+</video>
+
+<!-- ✅ LOADER -->
+<div id="loader">CHRISTON</div>
+
 <div class="wrap">
 
-<nav class="nav">
+<div class="nav">
   <div class="brand">CHRISTON</div>
-  <div>
-    <a href="#music">Music</a>
-    <a href="#beats">Beats</a>
-    <a href="#products">Drumkit</a>
-    <a href="#contact">Contact</a>
-  </div>
-</nav>
+</div>
 
-<section class="hero">
-  <h1>Producer & Artist</h1>
-  <p>Fully produced and performed music. Beats available for artists and brands.</p>
-  <div class="cta">
-    <a class="btn primary" href="https://ffm.to/ftd" target="_blank">Listen</a>
-    <a class="btn pulse" href="#beats">Buy Beats</a>
+<section class="hero reveal">
+  <div class="pill">From The Dirt — Fully Produced & Performed By Christon</div>
+
+  <h1>From The Dirt<br>Mixtape Out Now</h1>
+
+  <p class="sub">Producer & Artist. PEACE. CONTACT FOR BEATS OR BUSINESS.</p>
+
+  <div class="cta-row">
+    <a href="https://ffm.to/ftd" class="btn" target="_blank">Listen Now</a>
+    <a href="#links" class="btn outline">My Links</a>
+  </div>
+
+  <div class="float-cards">
+    <div class="stat-card">150M+ Streams</div>
+    <div class="stat-card">120+ Drumkit Users</div>
+    <div class="stat-card">Freshman Out Now</div>
   </div>
 </section>
 
-<section id="music">
-  <h2 class="section-title">Music</h2>
+<a class="image-link reveal" href="https://payhip.com/b/rso1g" target="_blank">
+  <img src="drumkit.jpg" alt="Drumkit">
+</a>
 
-  <div class="stats">
-    <div class="stat">150M+ Streams</div>
-    <div class="stat">120+ Drumkit Users</div>
-    <div class="stat">Independent</div>
-  </div>
-
-  <iframe style="border-radius:12px;border:2px solid black"
-    src="https://open.spotify.com/album/3bZllb9TbaGwuXbsr37WIa"
-    width="100%" height="152" allow="encrypted-media">
+<!-- ✅ SPOTIFY EMBED -->
+<div class="reveal" style="margin-top:48px; max-width:560px;">
+  <iframe style="border-radius:18px"
+    src="https://open.spotify.com/album/3bZllb9TbaGwuXbsr37WIa?si=8gHzp25cRL-s_gchYn01Xg"
+    width="100%" height="152" frameborder="0"
+    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
   </iframe>
-</section>
+</div>
 
-<section id="beats">
-  <h2 class="section-title">Beats</h2>
-  <div class="pricing">
-    <div class="price-card">
-      <h3>Basic Lease</h3>
-      <div class="price">$30</div>
-      <ul>
-        <li>MP3 + WAV</li>
-        <li>Non-exclusive</li>
-        <li>Unlimited streams</li>
-      </ul>
-      <a class="btn" href="https://www.beatstars.com/christonnn" target="_blank">Purchase</a>
-    </div>
-
-    <div class="price-card">
-      <h3>Exclusive</h3>
-      <div class="price">$250</div>
-      <ul>
-        <li>Full ownership</li>
-        <li>All stems</li>
-        <li>One-time sale</li>
-      </ul>
-      <a class="btn primary" href="https://www.beatstars.com/christonnn" target="_blank">Contact</a>
-    </div>
+<section id="links" class="reveal">
+  <div class="links">
+    <a class="link" href="https://ffm.to/ftd" target="_blank">From The Dirt Mixtape</a>
+    <a class="link" href="https://www.beatstars.com/christonnn" target="_blank">BeatStars</a>
+    <a class="link" href="https://payhip.com/b/rso1g" target="_blank">Drumkit (The Son)</a>
+    <a class="link" href="https://www.instagram.com/christonwords/" target="_blank">Instagram</a>
+    <a class="link" href="https://www.tiktok.com/@christonwords" target="_blank">TikTok</a>
+    <a class="link" href="https://x.com/christonwords" target="_blank">X (Twitter)</a>
   </div>
 </section>
 
-<section id="products">
-  <h2 class="section-title">Drumkit</h2>
-  <a class="link" href="https://payhip.com/b/rso1g" target="_blank">
-    The Son Drumkit
-  </a>
-</section>
-
-<footer id="contact">
-  softparish@gmail.com
-</footer>
+<div class="footer reveal">softparish@gmail.com</div>
 
 </div>
+
+<script>
+const reveals=document.querySelectorAll(".reveal");
+window.addEventListener("scroll",()=>{
+  reveals.forEach(el=>{
+    const top=el.getBoundingClientRect().top;
+    if(top<window.innerHeight-80) el.classList.add("active");
+  });
+});
+</script>
+
 </body>
 </html>
