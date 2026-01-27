@@ -449,10 +449,10 @@
 
   const tracks = [
     { title: "Badman Intro", src: baseUrl + "Badman.Intro.mp3" },
-    { title: "my lord ... i need you", src: baseUrl + "my.lord.i.need.you.mp3" },
+    { title: "my lord ... i need you", src: baseUrl + "my.lord....i.need.you.mp3" },
     { title: "can you feel it", src: baseUrl + "can.you.feel.it.mp3" },
     { title: "this is me", src: baseUrl + "this.is.me.mp3" },
-    { title: "the badman", src: baseUrl + "the.badman.mp3" },
+    { title: "the badman tracks", src: baseUrl + "the.badman.mp3" },
     { title: "can’t second guess", src: baseUrl + "can.t.second.guess.mp3" },
     { title: "doomsday", src: baseUrl + "doomsday.mp3" },
     { title: "way back when", src: baseUrl + "way.back.when.mp3" },
@@ -504,7 +504,7 @@
       el.classList.toggle('current', i === currentTrack);
     });
 
-    // Clear any old buffering timeout
+    // Clear old timeout
     if (bufferingTimeout) clearTimeout(bufferingTimeout);
 
     audio.onloadeddata = () => {
@@ -517,11 +517,11 @@
       loadingOverlay.innerHTML = "Error loading track<br><button onclick='loadAndPlay()'>Retry</button>";
     };
 
-    // Buffering watchdog
+    // Buffering watchdog – retry after 8s stall
     audio.onwaiting = () => {
       bufferingTimeout = setTimeout(() => {
         if (isPlaying && audio.paused) {
-          loadingOverlay.innerHTML = "Buffering slow…<br><button onclick='audio.play()'>Retry</button>";
+          loadingOverlay.innerHTML = "Buffering slow…<br><button onclick='audio.play()'>Retry Play</button>";
         }
       }, 8000);
     };
@@ -533,7 +533,9 @@
   }
 
   function play() {
-    audio.play().catch(() => {});
+    audio.play().catch(() => {
+      loadingOverlay.innerHTML = "Playback failed – tap to retry<br><button onclick='play()'>Play</button>";
+    });
     playIcon.style.display = 'none';
     pauseIcon.style.display = 'block';
     isPlaying = true;
@@ -597,6 +599,15 @@
     const durMin = Math.floor(audio.duration / 60);
     const durSec = Math.floor(audio.duration % 60).toString().padStart(2,'0');
     durationEl.textContent = `${durMin}:${durSec}`;
+  });
+
+  audio.addEventListener('waiting', () => {
+    loadingOverlay.classList.add('active');
+    loadingOverlay.textContent = "Buffering…";
+  });
+
+  audio.addEventListener('playing', () => {
+    loadingOverlay.classList.remove('active');
   });
 
   audio.addEventListener('ended', () => {
