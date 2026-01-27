@@ -80,15 +80,8 @@
       animation:led-play 1.4s ease-in-out infinite;
     }
 
-    @keyframes led-pulse {
-      0%,100% { opacity:0.6; transform:scale(1); }
-      50%     { opacity:1; transform:scale(1.15); }
-    }
-
-    @keyframes led-play {
-      0%,100% { opacity:0.8; transform:scale(1); }
-      50%     { opacity:1; transform:scale(1.2); }
-    }
+    @keyframes led-pulse { 0%,100% { opacity:0.6; transform:scale(1); } 50% { opacity:1; transform:scale(1.15); } }
+    @keyframes led-play   { 0%,100% { opacity:0.8; transform:scale(1); } 50% { opacity:1; transform:scale(1.2); } }
 
     .screen-area {
       padding:32px 22px 28px;
@@ -103,9 +96,7 @@
       background:linear-gradient(145deg,#222,#111);
       border-radius:16px;
       margin-bottom:28px;
-      box-shadow:
-        inset 0 0 60px rgba(0,0,0,0.9),
-        0 12px 48px rgba(0,0,0,0.8);
+      box-shadow:inset 0 0 60px rgba(0,0,0,0.9), 0 12px 48px rgba(0,0,0,0.8);
       overflow:hidden;
     }
 
@@ -118,19 +109,14 @@
       background:radial-gradient(circle at 40% 40%, #333, #222 60%, #1a1a1a);
       border-radius:50%;
       border:8px solid #2a2a2a;
-      box-shadow:
-        inset 0 0 30px rgba(0,0,0,0.8),
-        0 0 20px rgba(255,215,0,0.15);
+      box-shadow:inset 0 0 30px rgba(0,0,0,0.8), 0 0 20px rgba(255,215,0,0.15);
       animation:spin-reel 18s linear infinite paused;
     }
 
     .reel-left { left:10%; animation-direction:normal; }
     .reel-right { right:10%; animation-direction:reverse; }
 
-    .playing .reel-left,
-    .playing .reel-right {
-      animation-play-state:running;
-    }
+    .playing .reel-left, .playing .reel-right { animation-play-state:running; }
 
     @keyframes spin-reel {
       from { transform:translateY(-50%) rotate(0deg); }
@@ -160,9 +146,7 @@
       border-radius:16px;
       overflow:hidden;
       margin:24px 0;
-      box-shadow:
-        inset 0 0 80px rgba(0,0,0,0.95),
-        0 12px 48px rgba(0,0,0,0.8);
+      box-shadow:inset 0 0 80px rgba(0,0,0,0.95), 0 12px 48px rgba(0,0,0,0.8);
       position:relative;
     }
 
@@ -188,10 +172,7 @@
       transition:opacity 0.4s;
     }
 
-    .loading-overlay.active {
-      opacity:1;
-      pointer-events:all;
-    }
+    .loading-overlay.active { opacity:1; pointer-events:all; }
 
     .now-playing {
       text-align:center;
@@ -505,6 +486,7 @@
 
   function loadAndPlay() {
     loadingOverlay.classList.add('active');
+    loadingOverlay.textContent = "Loading track…";
     audio.src = tracks[currentTrack].src;
     audio.load();
     currentTitleEl.textContent = tracks[currentTrack].title;
@@ -520,7 +502,8 @@
     };
 
     audio.onerror = () => {
-      loadingOverlay.textContent = "Error loading track";
+      loadingOverlay.textContent = "Error loading track – try again";
+      setTimeout(() => loadingOverlay.classList.remove('active'), 3000);
     };
   }
 
