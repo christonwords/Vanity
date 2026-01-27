@@ -16,7 +16,7 @@
       display:flex;
       justify-content:center;
       align-items:center;
-      padding:20px;
+      padding:16px;
       overflow-x:hidden;
       position:relative;
     }
@@ -25,41 +25,41 @@
       position:relative;
       width:100%;
       max-width:420px;
-      perspective:1400px;
+      perspective:1600px;
+      transform-style:preserve-3d;
     }
 
     .player-container {
       width:100%;
-      background:linear-gradient(145deg,#1c1c1c,#0b0b0b);
+      background:linear-gradient(145deg,#1e1e1e,#0c0c0c);
       border-radius:32px;
       overflow:hidden;
       box-shadow:
-        0 60px 140px rgba(0,0,0,0.95),
-        inset 0 6px 16px rgba(255,255,255,0.05),
-        inset 0 -6px 16px rgba(0,0,0,1),
-        0 0 0 2px rgba(255,255,255,0.03);
-      border:2px solid #151515;
-      transform-style:preserve-3d;
-      transform:rotateX(6deg) rotateY(4deg) scale(1.02);
-      transition:transform 0.6s ease;
+        0 80px 160px rgba(0,0,0,1),
+        inset 0 8px 24px rgba(255,255,255,0.06),
+        inset 0 -8px 24px rgba(0,0,0,1),
+        0 0 0 3px rgba(255,255,255,0.04);
+      border:3px solid #141414;
+      transform:rotateX(8deg) rotateY(5deg) scale(1.02);
+      transition:transform 0.8s cubic-bezier(0.23,1,0.32,1);
     }
 
     .player-container:hover {
-      transform:rotateX(4deg) rotateY(3deg) scale(1.03);
+      transform:rotateX(5deg) rotateY(3deg) scale(1.04);
     }
 
     .top-bar {
-      height:54px;
-      background:linear-gradient(to bottom,#2a2a2a,#1a1a1a);
-      border-bottom:1px solid #111;
+      height:56px;
+      background:linear-gradient(to bottom,#2e2e2e,#1e1e1e);
+      border-bottom:2px solid #0f0f0f;
       display:flex;
       align-items:center;
       justify-content:center;
-      font-size:15px;
+      font-size:16px;
       font-weight:700;
-      letter-spacing:2px;
+      letter-spacing:2.5px;
       color:#ffd700;
-      text-shadow:0 0 14px rgba(255,215,0,0.45);
+      text-shadow:0 0 16px rgba(255,215,0,0.5);
       position:relative;
     }
 
@@ -67,26 +67,85 @@
       content:"";
       position:absolute;
       inset:0;
-      background:radial-gradient(circle at 50% 0%, rgba(255,215,0,0.08), transparent 70%);
+      background:radial-gradient(circle at 50% 0%, rgba(255,215,0,0.1), transparent 70%);
       pointer-events:none;
     }
 
     .screen-area {
-      padding:32px 22px 28px;
+      padding:32px 20px 28px;
       background:#000;
+      position:relative;
+    }
+
+    .cassette-body {
+      position:relative;
+      width:100%;
+      aspect-ratio:1.8 / 1;
+      background:linear-gradient(145deg,#222,#111);
+      border-radius:16px;
+      margin-bottom:28px;
+      box-shadow:
+        inset 0 0 60px rgba(0,0,0,0.9),
+        0 12px 48px rgba(0,0,0,0.8);
+      overflow:hidden;
+    }
+
+    .reel-left, .reel-right {
+      position:absolute;
+      width:90px;
+      height:90px;
+      top:50%;
+      transform:translateY(-50%);
+      background:radial-gradient(circle at 40% 40%, #333, #222 60%, #1a1a1a);
+      border-radius:50%;
+      border:8px solid #2a2a2a;
+      box-shadow:
+        inset 0 0 30px rgba(0,0,0,0.8),
+        0 0 20px rgba(255,215,0,0.15);
+      animation:spin-reel 20s linear infinite;
+    }
+
+    .reel-left {
+      left:10%;
+      animation-direction:normal;
+    }
+
+    .reel-right {
+      right:10%;
+      animation-direction:reverse;
+    }
+
+    @keyframes spin-reel {
+      from { transform:translateY(-50%) rotate(0deg); }
+      to   { transform:translateY(-50%) rotate(360deg); }
+    }
+
+    .reel-hub {
+      position:absolute;
+      inset:20px;
+      background:#1a1a1a;
+      border-radius:50%;
+      box-shadow:inset 0 0 20px #000;
+    }
+
+    .reel-tape {
+      position:absolute;
+      inset:0;
+      background:repeating-linear-gradient(45deg, #222, #222 4px, #1e1e1e 4px, #1e1e1e 8px);
+      border-radius:50%;
+      opacity:0.4;
     }
 
     .album-art {
       width:100%;
       aspect-ratio:1/1;
       background:#0a0a0a;
-      border-radius:18px;
+      border-radius:16px;
       overflow:hidden;
-      margin-bottom:28px;
+      margin:24px 0;
       box-shadow:
         inset 0 0 80px rgba(0,0,0,0.95),
-        0 10px 40px rgba(0,0,0,0.8),
-        inset 0 2px 8px rgba(255,255,255,0.04);
+        0 12px 48px rgba(0,0,0,0.8);
       position:relative;
     }
 
@@ -97,16 +156,13 @@
       filter:brightness(0.9) contrast(1.15);
     }
 
-    .album-art::before,
     .album-art::after {
       content:"";
       position:absolute;
       inset:0;
+      background:radial-gradient(circle at 30% 20%, rgba(255,215,0,0.1), transparent 70%);
       pointer-events:none;
     }
-
-    .album-art::before { background:radial-gradient(circle at 30% 20%, rgba(255,215,0,0.12), transparent 60%); }
-    .album-art::after  { background:linear-gradient(to bottom, rgba(0,0,0,0.35), transparent 40%, rgba(0,0,0,0.45)); }
 
     .now-playing {
       text-align:center;
@@ -167,7 +223,7 @@
       background:linear-gradient(145deg,#222,#111);
       border:1px solid #2a2a2a;
       color:#e0e0e0;
-      font-size:22px;
+      font-size:0;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -178,26 +234,32 @@
       overflow:hidden;
     }
 
+    .control-btn svg {
+      width:28px;
+      height:28px;
+      fill:#e0e0e0;
+      transition:fill 0.25s;
+    }
+
     .control-btn:hover {
       transform:scale(1.12);
       box-shadow:0 8px 24px rgba(255,215,0,0.3), inset 0 1px 4px rgba(255,215,0,0.15);
       border-color:#ffd700;
-      color:#ffd700;
     }
+
+    .control-btn:hover svg { fill:#ffd700; }
 
     .control-btn:active { transform:scale(0.94); box-shadow:0 2px 8px rgba(0,0,0,0.6); }
 
     .play-pause {
       width:70px;
       height:70px;
-      font-size:32px;
       background:linear-gradient(145deg,#ffd700,#ffeb3b);
-      color:#000;
       box-shadow:0 10px 40px rgba(255,215,0,0.5), inset 0 2px 6px rgba(255,255,255,0.4);
       border:none;
     }
 
-    .play-pause:hover { box-shadow:0 16px 60px rgba(255,215,0,0.7); }
+    .play-pause svg { width:36px; height:36px; fill:#000; }
 
     .volume-container {
       display:flex;
@@ -213,6 +275,7 @@
       border-radius:3px;
       cursor:pointer;
       box-shadow:inset 0 1px 3px rgba(0,0,0,0.7);
+      position:relative;
     }
 
     .volume-bar {
@@ -260,10 +323,12 @@
       font-weight:500;
       pointer-events:none;
       text-align:right;
-      max-width:200px;
+      max-width:240px;
     }
 
     @media (max-width:480px) {
+      .player-wrapper { max-width:360px; }
+      .player-container { transform:rotateX(4deg) rotateY(2deg) scale(1.01); }
       .side-credit { font-size:12px; right:12px; bottom:12px; }
     }
   </style>
@@ -275,6 +340,17 @@
     <div class="top-bar">BADMAN • CHRISTON</div>
 
     <div class="screen-area">
+      <div class="cassette-body">
+        <div class="reel-left">
+          <div class="reel-hub"></div>
+          <div class="reel-tape"></div>
+        </div>
+        <div class="reel-right">
+          <div class="reel-hub"></div>
+          <div class="reel-tape"></div>
+        </div>
+      </div>
+
       <div class="album-art">
         <img src="https://i.ibb.co/KpyNrYD6/BADMAN-COVER-3.jpg" alt="BADMAN Album Cover">
       </div>
@@ -294,11 +370,22 @@
       </div>
 
       <div class="controls">
-        <div class="control-btn" id="shuffleBtn" title="Shuffle">🔀</div>
-        <div class="control-btn" id="prevBtn">⏮</div>
-        <div class="control-btn play-pause" id="playPauseBtn">▶</div>
-        <div class="control-btn" id="nextBtn">⏭</div>
-        <div class="control-btn" id="repeatBtn" title="Repeat">🔁</div>
+        <div class="control-btn" id="shuffleBtn" title="Shuffle">
+          <svg viewBox="0 0 24 24"><path d="M14 20v-2h2.586l-3.293-3.293 1.414-1.414L18 16.586V14h2v6h-6zM4 4v2H2.414l3.293 3.293-1.414 1.414L2 7.414V10H0V4h6zM20 4v6h-2V7.414l-3.293 3.293-1.414-1.414L16.586 6H14V4h6zM8 18H2v-2h4.586l3.293-3.293 1.414 1.414L7.414 18H8v2z"/></svg>
+        </div>
+        <div class="control-btn" id="prevBtn">
+          <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm4 6l10-6v12z"/></svg>
+        </div>
+        <div class="control-btn play-pause" id="playPauseBtn">
+          <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          <svg id="pauseIcon" viewBox="0 0 24 24" style="display:none"><path d="M6 19h4V5H6zm8 0h4V5h-4z"/></svg>
+        </div>
+        <div class="control-btn" id="nextBtn">
+          <svg viewBox="0 0 24 24"><path d="M16 6h2v12h-2zm-4 6l-10-6v12z"/></svg>
+        </div>
+        <div class="control-btn" id="repeatBtn" title="Repeat">
+          <svg viewBox="0 0 24 24"><path d="M17 4l-5 5-1.5-1.5L15.5 2.5 17 4zm-5 14l5-5 1.5 1.5L12.5 21.5 12 20zM6 6h2v12H6zm10 0h2v12h-2z"/></svg>
+        </div>
       </div>
 
       <div class="volume-container">
@@ -314,7 +401,7 @@
 </div>
 
 <div class="side-credit">
-  PRODUCED & PERFORMED<br>BY CHRISTON
+  PRODUCED & PERFORMED<br>BY CHRISTON<br>@christonwords • softparish@gmail.com
 </div>
 
 <audio id="audioPlayer"></audio>
@@ -322,6 +409,8 @@
 <script>
   const audio = document.getElementById('audioPlayer');
   const playPauseBtn = document.getElementById('playPauseBtn');
+  const playIcon = document.getElementById('playIcon');
+  const pauseIcon = document.getElementById('pauseIcon');
   const prevBtn = document.getElementById('prevBtn');
   const nextBtn = document.getElementById('nextBtn');
   const shuffleBtn = document.getElementById('shuffleBtn');
@@ -355,7 +444,7 @@
   let currentTrack = 0;
   let isPlaying = false;
   let isShuffle = false;
-  let repeatMode = 'off';
+  let repeatMode = 'off'; // off | one | all
 
   // Populate tracklist
   tracks.forEach((track, index) => {
@@ -369,6 +458,7 @@
     item.addEventListener('click', () => {
       currentTrack = index;
       loadAndPlay();
+      play();
     });
     tracklistEl.appendChild(item);
   });
@@ -387,13 +477,15 @@
 
   function play() {
     audio.play().catch(() => {});
-    playPauseBtn.textContent = '❚❚';
+    playIcon.style.display = 'none';
+    pauseIcon.style.display = 'block';
     isPlaying = true;
   }
 
   function pause() {
     audio.pause();
-    playPauseBtn.textContent = '▶';
+    playIcon.style.display = 'block';
+    pauseIcon.style.display = 'none';
     isPlaying = false;
   }
 
@@ -421,14 +513,11 @@
   repeatBtn.addEventListener('click', () => {
     if (repeatMode === 'off') {
       repeatMode = 'all';
-      repeatBtn.textContent = '🔁';
       repeatBtn.style.color = '#ffd700';
     } else if (repeatMode === 'all') {
       repeatMode = 'one';
-      repeatBtn.textContent = '🔂';
     } else {
       repeatMode = 'off';
-      repeatBtn.textContent = '🔁';
       repeatBtn.style.color = '#aaa';
     }
   });
@@ -453,28 +542,54 @@
     if (repeatMode === 'one') {
       audio.currentTime = 0;
       play();
-    } else if (repeatMode === 'all' || isShuffle) {
+    } else {
       if (isShuffle) currentTrack = Math.floor(Math.random() * tracks.length);
       else currentTrack = (currentTrack + 1) % tracks.length;
       loadAndPlay();
       play();
-    } else {
-      pause();
     }
   });
 
+  // Progress seek (click)
   progressContainer.addEventListener('click', (e) => {
     const rect = progressContainer.getBoundingClientRect();
     const pos = (e.clientX - rect.left) / rect.width;
     audio.currentTime = pos * audio.duration;
   });
 
-  volumeSlider.addEventListener('click', (e) => {
+  // Volume drag (mouse + touch)
+  let isDraggingVolume = false;
+
+  const updateVolume = (e) => {
+    if (!isDraggingVolume) return;
     const rect = volumeSlider.getBoundingClientRect();
-    const pos = (e.clientX - rect.left) / rect.width;
+    let pos;
+    if (e.touches) {
+      pos = (e.touches[0].clientX - rect.left) / rect.width;
+    } else {
+      pos = (e.clientX - rect.left) / rect.width;
+    }
+    pos = Math.max(0, Math.min(1, pos));
     audio.volume = pos;
     volumeBar.style.width = `${pos * 100}%`;
+  };
+
+  volumeSlider.addEventListener('mousedown', (e) => {
+    isDraggingVolume = true;
+    updateVolume(e);
   });
+
+  volumeSlider.addEventListener('touchstart', (e) => {
+    isDraggingVolume = true;
+    updateVolume(e);
+    e.preventDefault();
+  }, { passive: false });
+
+  document.addEventListener('mousemove', updateVolume);
+  document.addEventListener('touchmove', updateVolume, { passive: false });
+
+  document.addEventListener('mouseup', () => isDraggingVolume = false);
+  document.addEventListener('touchend', () => isDraggingVolume = false);
 
   // Initial load
   loadAndPlay();
