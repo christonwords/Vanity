@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>BADMAN • Walkman</title>
+  <title>BADMAN • Christon</title>
 
   <style>
     * {
@@ -20,40 +20,43 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 20px;
-      overflow-x: hidden;
+      padding: 20px 10px;
     }
 
-    .walkman-container {
+    .player-container {
       width: 100%;
-      max-width: 380px;
-      background: linear-gradient(145deg, #111111, #0a0a0a);
-      border-radius: 24px;
+      max-width: 400px;
+      background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+      border-radius: 28px;
       overflow: hidden;
       box-shadow: 
-        0 30px 80px rgba(0,0,0,0.9),
-        inset 0 2px 8px rgba(255,255,255,0.04),
-        inset 0 -2px 8px rgba(0,0,0,0.8);
-      border: 1px solid #222;
+        0 40px 100px rgba(0,0,0,0.9),
+        inset 0 4px 12px rgba(255,255,255,0.03),
+        inset 0 -4px 12px rgba(0,0,0,0.9),
+        0 0 0 1px rgba(255,255,255,0.04);
+      border: 2px solid #111;
       position: relative;
+      perspective: 1200px;
+      transform-style: preserve-3d;
+      transform: rotateX(5deg) rotateY(3deg);
     }
 
-    .walkman-top {
-      height: 48px;
-      background: #1a1a1a;
-      border-bottom: 1px solid #222;
+    .player-top-bar {
+      height: 50px;
+      background: linear-gradient(to bottom, #222, #111);
+      border-bottom: 1px solid #0a0a0a;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 14px;
-      font-weight: 600;
-      letter-spacing: 1.5px;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 2px;
       color: #ffd700;
-      text-shadow: 0 0 10px rgba(255,215,0,0.3);
+      text-shadow: 0 0 12px rgba(255,215,0,0.4);
     }
 
-    .screen {
-      padding: 24px 20px 20px;
+    .screen-area {
+      padding: 28px 20px 24px;
       background: #000;
       position: relative;
     }
@@ -61,11 +64,13 @@
     .album-art {
       width: 100%;
       aspect-ratio: 1 / 1;
-      background: #111;
-      border-radius: 12px;
+      background: #0a0a0a;
+      border-radius: 16px;
       overflow: hidden;
-      margin-bottom: 20px;
-      box-shadow: inset 0 0 40px rgba(0,0,0,0.8);
+      margin-bottom: 24px;
+      box-shadow: 
+        inset 0 0 60px rgba(0,0,0,0.9),
+        0 8px 30px rgba(0,0,0,0.7);
       position: relative;
     }
 
@@ -73,159 +78,60 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      filter: brightness(0.85) contrast(1.1);
+      filter: brightness(0.88) contrast(1.12);
+      image-rendering: crisp-edges;
     }
 
-    .now-playing {
+    .album-art::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.2), transparent 40%, rgba(0,0,0,0.3));
+      pointer-events: none;
+    }
+
+    .track-info {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
     }
 
     .track-title {
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 700;
-      margin-bottom: 6px;
       color: #fff;
+      margin-bottom: 8px;
     }
 
     .track-artist {
-      font-size: 14px;
+      font-size: 15px;
       color: #aaa;
     }
 
-    .progress-container {
-      height: 4px;
-      background: #222;
-      border-radius: 2px;
-      margin: 16px 0;
-      cursor: pointer;
-      overflow: hidden;
-    }
-
-    .progress-bar {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, #ffd700, #ffeb3b);
-      border-radius: 2px;
-      transition: width 0.2s linear;
-    }
-
-    .time {
+    .embeds-container {
       display: flex;
-      justify-content: space-between;
-      font-size: 12px;
-      color: #888;
-      margin-bottom: 20px;
-    }
-
-    .controls {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 12px;
-    }
-
-    .control-btn {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.12);
-      color: #fff;
-      font-size: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      backdrop-filter: blur(10px);
-    }
-
-    .control-btn:hover {
-      background: rgba(255,215,0,0.15);
-      border-color: rgba(255,215,0,0.4);
-      transform: scale(1.08);
-      box-shadow: 0 0 20px rgba(255,215,0,0.25);
-    }
-
-    .control-btn:active {
-      transform: scale(0.95);
-    }
-
-    .play-pause {
-      width: 64px;
-      height: 64px;
-      font-size: 28px;
-      background: linear-gradient(145deg, #ffd700, #ffeb3b);
-      color: #000;
-      font-weight: bold;
-      border: none;
-      box-shadow: 0 8px 30px rgba(255,215,0,0.4);
-    }
-
-    .play-pause:hover {
-      box-shadow: 0 12px 50px rgba(255,215,0,0.6);
-    }
-
-    .volume-container {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-top: 20px;
-    }
-
-    .volume-slider {
-      flex: 1;
-      height: 4px;
-      background: #222;
-      border-radius: 2px;
-      cursor: pointer;
-    }
-
-    .volume-bar {
-      height: 100%;
-      width: 70%;
-      background: #ffd700;
-      border-radius: 2px;
-    }
-
-    .tracklist {
+      flex-direction: column;
+      gap: 20px;
       margin-top: 32px;
-      padding: 0 12px 32px;
-      max-height: 320px;
+    }
+
+    .embed-wrapper {
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+      border: 1px solid #111;
+    }
+
+    /* Scrollable tracklist area if needed */
+    .embeds-container {
+      max-height: 500px;
       overflow-y: auto;
     }
 
-    .track-item {
-      padding: 12px 0;
-      border-bottom: 1px solid #111;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 14px;
-      color: #aaa;
-      transition: color 0.2s;
-    }
-
-    .track-item.current {
-      color: #ffd700;
-      font-weight: 600;
-    }
-
-    .track-item:hover {
-      color: #fff;
-    }
-
-    .track-num {
-      width: 24px;
-      text-align: center;
-      color: #666;
-    }
-
-    .tracklist::-webkit-scrollbar {
+    .embeds-container::-webkit-scrollbar {
       width: 6px;
     }
-    .tracklist::-webkit-scrollbar-thumb {
+
+    .embeds-container::-webkit-scrollbar-thumb {
       background: #333;
       border-radius: 3px;
     }
@@ -233,216 +139,59 @@
 </head>
 <body>
 
-<div class="walkman-container">
-  <div class="walkman-top">BADMAN • WALKMAN</div>
+<div class="player-container">
+  <div class="player-top-bar">BADMAN • CHRISTON</div>
 
-  <div class="screen">
+  <div class="screen-area">
     <div class="album-art">
-      <!-- Replace with your actual album cover URL -->
-      <img src="https://drive.google.com/uc?export=view&id=1Mj9rtJjsMp6xxrjPSkHgdNqnvitnt0VG" alt="BADMAN Album Cover">
+      <img src="https://i.ibb.co/KpyNrYD6/BADMAN-COVER-3.jpg" alt="BADMAN Album Cover">
     </div>
 
-    <div class="now-playing">
-      <div class="track-title" id="currentTitle">Badman Intro</div>
-      <div class="track-artist">santorinigree • BADMAN</div>
+    <div class="track-info">
+      <div class="track-title">BADMAN</div>
+      <div class="track-artist">Christon</div>
     </div>
 
-    <div class="progress-container" id="progressContainer">
-      <div class="progress-bar" id="progressBar"></div>
-    </div>
-
-    <div class="time">
-      <span id="currentTime">0:00</span>
-      <span id="duration">0:00</span>
-    </div>
-
-    <div class="controls">
-      <div class="control-btn" id="shuffleBtn" title="Shuffle">🔀</div>
-      <div class="control-btn" id="prevBtn">⏮</div>
-      <div class="control-btn play-pause" id="playPauseBtn">▶</div>
-      <div class="control-btn" id="nextBtn">⏭</div>
-      <div class="control-btn" id="repeatBtn" title="Repeat">🔁</div>
-    </div>
-
-    <div class="volume-container">
-      <span>🔈</span>
-      <div class="volume-slider" id="volumeSlider">
-        <div class="volume-bar" id="volumeBar"></div>
+    <div class="embeds-container">
+      <div class="embed-wrapper">
+        <iframe src="https://audiomack.com/embed/christonmusic/song/badman-intro" scrolling="no" width="100%" height="252" frameborder="0" title="Badman Intro"></iframe>
+      </div>
+      <div class="embed-wrapper">
+        <iframe src="https://audiomack.com/embed/christonmusic/song/my-lord-i-need-you" scrolling="no" width="100%" height="252" frameborder="0" title="My Lord ... I Need You"></iframe>
+      </div>
+      <div class="embed-wrapper">
+        <iframe src="https://audiomack.com/embed/christonmusic/song/can-you-feel-it" scrolling="no" width="100%" height="252" frameborder="0" title="Can You Feel It"></iframe>
+      </div>
+      <div class="embed-wrapper">
+        <iframe src="https://audiomack.com/embed/christonmusic/song/this-is-me" scrolling="no" width="100%" height="252" frameborder="0" title="This Is Me"></iframe>
+      </div>
+      <div class="embed-wrapper">
+        <iframe src="https://audiomack.com/embed/christonmusic/song/the-badman" scrolling="no" width="100%" height="252" frameborder="0" title="The Badman"></iframe>
+      </div>
+      <div class="embed-wrapper">
+        <iframe src="https://audiomack.com/embed/christonmusic/song/cant-second-guess" scrolling="no" width="100%" height="252" frameborder="0" title="Can't Second Guess"></iframe>
+      </div>
+      <div class="embed-wrapper">
+        <iframe src="https://audiomack.com/embed/christonmusic/song/doomsday" scrolling="no" width="100%" height="252" frameborder="0" title="Doomsday"></iframe>
+      </div>
+      <div class="embed-wrapper">
+        <iframe src="https://audiomack.com/embed/christonmusic/song/way-back-when" scrolling="no" width="100%" height="252" frameborder="0" title="Way Back When"></iframe>
+      </div>
+      <div class="embed-wrapper">
+        <iframe src="https://audiomack.com/embed/christonmusic/song/the-aftermath" scrolling="no" width="100%" height="252" frameborder="0" title="The Aftermath"></iframe>
+      </div>
+      <div class="embed-wrapper">
+        <iframe src="https://audiomack.com/embed/christonmusic/song/both-feet-in" scrolling="no" width="100%" height="252" frameborder="0" title="Both Feet In"></iframe>
+      </div>
+      <div class="embed-wrapper">
+        <iframe src="https://audiomack.com/embed/christonmusic/song/value-what-i-do" scrolling="no" width="100%" height="252" frameborder="0" title="Value What I Do"></iframe>
+      </div>
+      <div class="embed-wrapper">
+        <iframe src="https://audiomack.com/embed/christonmusic/song/this-morning" scrolling="no" width="100%" height="252" frameborder="0" title="This Morning"></iframe>
       </div>
     </div>
-
-    <div class="tracklist" id="tracklist"></div>
   </div>
 </div>
-
-<audio id="audioPlayer"></audio>
-
-<script>
-  const audio = document.getElementById('audioPlayer');
-  const playPauseBtn = document.getElementById('playPauseBtn');
-  const prevBtn = document.getElementById('prevBtn');
-  const nextBtn = document.getElementById('nextBtn');
-  const shuffleBtn = document.getElementById('shuffleBtn');
-  const repeatBtn = document.getElementById('repeatBtn');
-  const progressContainer = document.getElementById('progressContainer');
-  const progressBar = document.getElementById('progressBar');
-  const currentTimeEl = document.getElementById('currentTime');
-  const durationEl = document.getElementById('duration');
-  const currentTitleEl = document.getElementById('currentTitle');
-  const tracklistEl = document.getElementById('tracklist');
-  const volumeSlider = document.getElementById('volumeSlider');
-  const volumeBar = document.getElementById('volumeBar');
-
-  // Your tracklist with placeholder direct Drive URLs
-  // Replace each src with real uc?export=download&id=FILE_ID
-  const tracks = [
-    { title: "Badman Intro", src: "https://drive.google.com/uc?export=download&id=15nZ1cWBxemcbcinoVpAKHKv8Vw-nF_FC" }, // example using your link
-    { title: "my lord ... i need you", src: "https://drive.google.com/uc?export=download&id=1NP5FXRciW3mo5iAn9DxuxX-VFlvqnGVq" },
-    { title: "can you feel it", src: "https://drive.google.com/uc?export=download&id=1BYXJIx4KJVRhBbiM5l5iJ-0HMf927P3w" },
-    { title: "this is me", src: "https://drive.google.com/uc?export=download&id=10kPFBaRwjX4WhB23GEVjtN5U2GaAI75O" },
-    { title: "the badman", src: "https://drive.google.com/uc?export=download&id=171-wfX6rZdNrqtQ8cT_MbxJcJzInX3RV" },
-    { title: "can’t second guess", src: "https://drive.google.com/uc?export=download&id=1dZvEie33Hc9bUVYUdJyr_xScUzZ1RTTj" },
-    { title: "doomsdsay", src: "https://drive.google.com/uc?export=download&id=1FTgY14nNUdEegh-Fn_AlJX96ST3PJQIm" },
-    { title: "way back when", src: "https://drive.google.com/uc?export=download&id=19wWqBc2jzNRmIzrDRAdBKMfB980XE3He" },
-    { title: "the aftermath", src: "https://drive.google.com/uc?export=download&id=1amHc5dSHvHbKbHR-l46H392phF0R8klz" },
-    { title: "both feet in", src: "https://drive.google.com/uc?export=download&id=1tPO-IVzh3KIAd6nZUP_1lGMFAGQ7BMOz" },
-    { title: "value what i do", src: "https://drive.google.com/uc?export=download&id=14GHy5vauJcJNLXVkwUnvhypv6Azj62Kz" },
-    { title: "this morning", src: "https://drive.google.com/uc?export=download&id=1K8dHgbn5_BoQ4kiUwgSlAyD3uo1-CS-1" },
-  ];
-
-  let currentTrack = 0;
-  let isPlaying = false;
-  let isShuffle = false;
-  let repeatMode = 'off'; // 'off', 'one', 'all'
-
-  // Populate tracklist
-  tracks.forEach((track, index) => {
-    const item = document.createElement('div');
-    item.className = 'track-item';
-    item.innerHTML = `
-      <span class="track-num">${index + 1}</span>
-      <span>${track.title}</span>
-      <span>...</span>
-    `;
-    item.addEventListener('click', () => {
-      currentTrack = index;
-      loadAndPlay();
-    });
-    tracklistEl.appendChild(item);
-  });
-
-  function loadAndPlay() {
-    audio.src = tracks[currentTrack].src;
-    audio.load();
-    currentTitleEl.textContent = tracks[currentTrack].title;
-
-    document.querySelectorAll('.track-item').forEach((el, i) => {
-      el.classList.toggle('current', i === currentTrack);
-    });
-
-    if (isPlaying) audio.play().catch(() => {});
-  }
-
-  function play() {
-    audio.play().catch(() => {});
-    playPauseBtn.textContent = '❚❚';
-    isPlaying = true;
-  }
-
-  function pause() {
-    audio.pause();
-    playPauseBtn.textContent = '▶';
-    isPlaying = false;
-  }
-
-  playPauseBtn.addEventListener('click', () => {
-    if (isPlaying) pause();
-    else play();
-  });
-
-  prevBtn.addEventListener('click', () => {
-    currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
-    loadAndPlay();
-    play();
-  });
-
-  nextBtn.addEventListener('click', () => {
-    currentTrack = (currentTrack + 1) % tracks.length;
-    loadAndPlay();
-    play();
-  });
-
-  shuffleBtn.addEventListener('click', () => {
-    isShuffle = !isShuffle;
-    shuffleBtn.style.color = isShuffle ? '#ffd700' : '#aaa';
-  });
-
-  repeatBtn.addEventListener('click', () => {
-    if (repeatMode === 'off') {
-      repeatMode = 'all';
-      repeatBtn.textContent = '🔁';
-      repeatBtn.style.color = '#ffd700';
-    } else if (repeatMode === 'all') {
-      repeatMode = 'one';
-      repeatBtn.textContent = '🔂';
-    } else {
-      repeatMode = 'off';
-      repeatBtn.textContent = '🔁';
-      repeatBtn.style.color = '#aaa';
-    }
-  });
-
-  audio.addEventListener('timeupdate', () => {
-    if (!audio.duration) return;
-    const progress = (audio.currentTime / audio.duration) * 100;
-    progressBar.style.width = `${progress}%`;
-
-    const curMin = Math.floor(audio.currentTime / 60);
-    const curSec = Math.floor(audio.currentTime % 60).toString().padStart(2, '0');
-    currentTimeEl.textContent = `${curMin}:${curSec}`;
-  });
-
-  audio.addEventListener('loadedmetadata', () => {
-    const durMin = Math.floor(audio.duration / 60);
-    const durSec = Math.floor(audio.duration % 60).toString().padStart(2, '0');
-    durationEl.textContent = `${durMin}:${durSec}`;
-  });
-
-  audio.addEventListener('ended', () => {
-    if (repeatMode === 'one') {
-      audio.currentTime = 0;
-      play();
-    } else if (repeatMode === 'all' || isShuffle) {
-      if (isShuffle) {
-        currentTrack = Math.floor(Math.random() * tracks.length);
-      } else {
-        currentTrack = (currentTrack + 1) % tracks.length;
-      }
-      loadAndPlay();
-      play();
-    } else {
-      pause();
-    }
-  });
-
-  progressContainer.addEventListener('click', (e) => {
-    const rect = progressContainer.getBoundingClientRect();
-    const pos = (e.clientX - rect.left) / rect.width;
-    audio.currentTime = pos * audio.duration;
-  });
-
-  volumeSlider.addEventListener('click', (e) => {
-    const rect = volumeSlider.getBoundingClientRect();
-    const pos = (e.clientX - rect.left) / rect.width;
-    audio.volume = pos;
-    volumeBar.style.width = `${pos * 100}%`;
-  });
-
-  // Initial load
-  loadAndPlay();
-  audio.volume = 0.7;
-  volumeBar.style.width = '70%';
-</script>
 
 </body>
 </html>
