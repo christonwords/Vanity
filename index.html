@@ -160,8 +160,9 @@
     .loading-overlay {
       position:absolute;
       inset:0;
-      background:rgba(0,0,0,0.7);
+      background:rgba(0,0,0,0.8);
       display:flex;
+      flex-direction:column;
       align-items:center;
       justify-content:center;
       font-size:18px;
@@ -173,6 +174,16 @@
     }
 
     .loading-overlay.active { opacity:1; pointer-events:all; }
+
+    .loading-overlay button {
+      margin-top:12px;
+      padding:8px 16px;
+      background:#222;
+      border:1px solid #444;
+      color:#fff;
+      border-radius:6px;
+      cursor:pointer;
+    }
 
     .now-playing {
       text-align:center;
@@ -412,7 +423,7 @@
   PRODUCED & PERFORMED<br>BY CHRISTON<br>@christonwords • softparish@gmail.com
 </div>
 
-<audio id="audioPlayer" preload="auto"></audio>
+<audio id="audioPlayer" preload="auto" playsinline></audio>
 
 <script>
   const audio = document.getElementById('audioPlayer');
@@ -434,7 +445,7 @@
   const ledIndicator = document.getElementById('ledIndicator');
   const loadingOverlay = document.getElementById('loadingOverlay');
 
-  const baseUrl = "https://github.com/christonwords/Vanity/releases/download/1.0/";
+  const baseUrl = "https://raw.githubusercontent.com/christonwords/Vanity/1.0/";
 
   const tracks = [
     { title: "Badman Intro", src: baseUrl + "Badman.Intro.mp3" },
@@ -455,6 +466,7 @@
   let isPlaying = false;
   let isShuffle = false;
   let repeatMode = 'off';
+  let bufferingTimeout = null;
 
   // Populate tracklist
   tracks.forEach((track, index) => {
@@ -483,7 +495,7 @@
 
   function loadAndPlay() {
     loadingOverlay.classList.add('active');
-    loadingOverlay.textContent = "Loading track…";
+    loadingOverlay.innerHTML = "Loading track…<br><button onclick='loadAndPlay()'>Retry</button>";
     audio.src = tracks[currentTrack].src;
     audio.load();
     currentTitleEl.textContent = tracks[currentTrack].title;
@@ -492,6 +504,9 @@
       el.classList.toggle('current', i === currentTrack);
     });
 
+    // Clear any old buffering timeout
+    if (bufferingTimeout) clearTimeout(bufferingTimeout);
+
     audio.onloadeddata = () => {
       loadingOverlay.classList.remove('active');
       if (isPlaying) play();
@@ -499,8 +514,21 @@
     };
 
     audio.onerror = () => {
-      loadingOverlay.textContent = "Error loading track – try again";
-      setTimeout(() => loadingOverlay.classList.remove('active'), 3000);
+      loadingOverlay.innerHTML = "Error loading track<br><button onclick='loadAndPlay()'>Retry</button>";
+    };
+
+    // Buffering watchdog
+    audio.onwaiting = () => {
+      bufferingTimeout = setTimeout(() => {
+        if (isPlaying && audio.paused) {
+          loadingOverlay.innerHTML = "Buffering slow…<br><button onclick='audio.play()'>Retry</button>";
+        }
+      }, 8000);
+    };
+
+    audio.onplaying = () => {
+      if (bufferingTimeout) clearTimeout(bufferingTimeout);
+      loadingOverlay.classList.remove('active');
     };
   }
 
@@ -571,15 +599,6 @@
     durationEl.textContent = `${durMin}:${durSec}`;
   });
 
-  audio.addEventListener('waiting', () => {
-    loadingOverlay.classList.add('active');
-    loadingOverlay.textContent = "Buffering…";
-  });
-
-  audio.addEventListener('playing', () => {
-    loadingOverlay.classList.remove('active');
-  });
-
   audio.addEventListener('ended', () => {
     if (repeatMode === 'one') {
       audio.currentTime = 0;
@@ -598,7 +617,7 @@
     audio.currentTime = pos * audio.duration;
   });
 
-  // Drag volume
+  // Drag volume (mouse + touch)
   let isDraggingVolume = false;
 
   const updateVolume = (e) => {
