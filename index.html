@@ -6,192 +6,408 @@
   <title>BADMAN • Christon</title>
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { margin:0; padding:0; box-sizing:border-box; }
     body {
-      background: #000;
-      color: #e0e0e0;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px 10px;
+      background:#000;
+      color:#e0e0e0;
+      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:20px;
+      overflow-x:hidden;
     }
 
     .player-container {
-      width: 100%;
-      max-width: 400px;
-      background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
-      border-radius: 28px;
-      overflow: hidden;
-      box-shadow: 
-        0 40px 100px rgba(0,0,0,0.9),
-        inset 0 4px 12px rgba(255,255,255,0.03),
-        inset 0 -4px 12px rgba(0,0,0,0.9),
-        0 0 0 1px rgba(255,255,255,0.04);
-      border: 2px solid #111;
-      position: relative;
-      perspective: 1200px;
-      transform-style: preserve-3d;
-      transform: rotateX(5deg) rotateY(3deg);
+      width:100%;
+      max-width:380px;
+      background:linear-gradient(145deg,#111,#0a0a0a);
+      border-radius:24px;
+      overflow:hidden;
+      box-shadow:0 30px 80px rgba(0,0,0,.9), inset 0 2px 8px rgba(255,255,255,.04), inset 0 -2px 8px rgba(0,0,0,.8);
+      border:1px solid #222;
     }
 
-    .player-top-bar {
-      height: 50px;
-      background: linear-gradient(to bottom, #222, #111);
-      border-bottom: 1px solid #0a0a0a;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      color: #ffd700;
-      text-shadow: 0 0 12px rgba(255,215,0,0.4);
+    .top-bar {
+      height:48px;
+      background:#1a1a1a;
+      border-bottom:1px solid #222;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:14px;
+      font-weight:600;
+      letter-spacing:1.5px;
+      color:#ffd700;
+      text-shadow:0 0 10px rgba(255,215,0,.3);
     }
 
-    .screen-area {
-      padding: 28px 20px 24px;
-      background: #000;
-      position: relative;
+    .screen {
+      padding:24px 20px 20px;
+      background:#000;
     }
 
     .album-art {
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      background: #0a0a0a;
-      border-radius: 16px;
-      overflow: hidden;
-      margin-bottom: 24px;
-      box-shadow: 
-        inset 0 0 60px rgba(0,0,0,0.9),
-        0 8px 30px rgba(0,0,0,0.7);
-      position: relative;
+      width:100%;
+      aspect-ratio:1/1;
+      background:#111;
+      border-radius:12px;
+      overflow:hidden;
+      margin-bottom:20px;
+      box-shadow:inset 0 0 40px rgba(0,0,0,.8);
     }
 
     .album-art img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: brightness(0.88) contrast(1.12);
-      image-rendering: crisp-edges;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      filter:brightness(.85) contrast(1.1);
     }
 
-    .album-art::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.2), transparent 40%, rgba(0,0,0,0.3));
-      pointer-events: none;
-    }
-
-    .track-info {
-      text-align: center;
-      margin-bottom: 24px;
+    .now-playing {
+      text-align:center;
+      margin-bottom:20px;
     }
 
     .track-title {
-      font-size: 20px;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 8px;
+      font-size:18px;
+      font-weight:700;
+      margin-bottom:6px;
+      color:#fff;
     }
 
     .track-artist {
-      font-size: 15px;
-      color: #aaa;
+      font-size:14px;
+      color:#aaa;
     }
 
-    .embeds-container {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      margin-top: 32px;
+    .progress-container {
+      height:4px;
+      background:#222;
+      border-radius:2px;
+      margin:16px 0;
+      cursor:pointer;
+      overflow:hidden;
     }
 
-    .embed-wrapper {
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
-      border: 1px solid #111;
+    .progress-bar {
+      height:100%;
+      width:0;
+      background:linear-gradient(90deg,#ffd700,#ffeb3b);
+      border-radius:2px;
+      transition:width .2s linear;
     }
 
-    /* Scrollable tracklist area if needed */
-    .embeds-container {
-      max-height: 500px;
-      overflow-y: auto;
+    .time {
+      display:flex;
+      justify-content:space-between;
+      font-size:12px;
+      color:#888;
+      margin-bottom:20px;
     }
 
-    .embeds-container::-webkit-scrollbar {
-      width: 6px;
+    .controls {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:0 12px;
     }
 
-    .embeds-container::-webkit-scrollbar-thumb {
-      background: #333;
-      border-radius: 3px;
+    .control-btn {
+      width:48px;
+      height:48px;
+      border-radius:50%;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+      color:#fff;
+      font-size:20px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      transition:all .2s ease;
+      backdrop-filter:blur(10px);
     }
+
+    .control-btn:hover {
+      background:rgba(255,215,0,.15);
+      border-color:rgba(255,215,0,.4);
+      transform:scale(1.08);
+      box-shadow:0 0 20px rgba(255,215,0,.25);
+    }
+
+    .control-btn:active { transform:scale(.95); }
+
+    .play-pause {
+      width:64px;
+      height:64px;
+      font-size:28px;
+      background:linear-gradient(145deg,#ffd700,#ffeb3b);
+      color:#000;
+      box-shadow:0 8px 30px rgba(255,215,0,.4);
+    }
+
+    .play-pause:hover { box-shadow:0 12px 50px rgba(255,215,0,.6); }
+
+    .volume-container {
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-top:20px;
+    }
+
+    .volume-slider {
+      flex:1;
+      height:4px;
+      background:#222;
+      border-radius:2px;
+      cursor:pointer;
+    }
+
+    .volume-bar {
+      height:100%;
+      width:70%;
+      background:#ffd700;
+      border-radius:2px;
+    }
+
+    .tracklist {
+      margin-top:32px;
+      padding:0 12px 32px;
+      max-height:320px;
+      overflow-y:auto;
+    }
+
+    .track-item {
+      padding:12px 0;
+      border-bottom:1px solid #111;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size:14px;
+      color:#aaa;
+      cursor:pointer;
+      transition:color .2s;
+    }
+
+    .track-item.current { color:#ffd700; font-weight:600; }
+    .track-item:hover { color:#fff; }
+
+    .track-num { width:24px; text-align:center; color:#666; }
+
+    .tracklist::-webkit-scrollbar { width:6px; }
+    .tracklist::-webkit-scrollbar-thumb { background:#333; border-radius:3px; }
   </style>
 </head>
 <body>
 
 <div class="player-container">
-  <div class="player-top-bar">BADMAN • CHRISTON</div>
+  <div class="top-bar">BADMAN • CHRISTON</div>
 
-  <div class="screen-area">
+  <div class="screen">
     <div class="album-art">
       <img src="https://i.ibb.co/KpyNrYD6/BADMAN-COVER-3.jpg" alt="BADMAN Album Cover">
     </div>
 
-    <div class="track-info">
-      <div class="track-title">BADMAN</div>
+    <div class="now-playing">
+      <div class="track-title" id="currentTitle">Badman Intro</div>
       <div class="track-artist">Christon</div>
     </div>
 
-    <div class="embeds-container">
-      <div class="embed-wrapper">
-        <iframe src="https://audiomack.com/embed/christonmusic/song/badman-intro" scrolling="no" width="100%" height="252" frameborder="0" title="Badman Intro"></iframe>
-      </div>
-      <div class="embed-wrapper">
-        <iframe src="https://audiomack.com/embed/christonmusic/song/my-lord-i-need-you" scrolling="no" width="100%" height="252" frameborder="0" title="My Lord ... I Need You"></iframe>
-      </div>
-      <div class="embed-wrapper">
-        <iframe src="https://audiomack.com/embed/christonmusic/song/can-you-feel-it" scrolling="no" width="100%" height="252" frameborder="0" title="Can You Feel It"></iframe>
-      </div>
-      <div class="embed-wrapper">
-        <iframe src="https://audiomack.com/embed/christonmusic/song/this-is-me" scrolling="no" width="100%" height="252" frameborder="0" title="This Is Me"></iframe>
-      </div>
-      <div class="embed-wrapper">
-        <iframe src="https://audiomack.com/embed/christonmusic/song/the-badman" scrolling="no" width="100%" height="252" frameborder="0" title="The Badman"></iframe>
-      </div>
-      <div class="embed-wrapper">
-        <iframe src="https://audiomack.com/embed/christonmusic/song/cant-second-guess" scrolling="no" width="100%" height="252" frameborder="0" title="Can't Second Guess"></iframe>
-      </div>
-      <div class="embed-wrapper">
-        <iframe src="https://audiomack.com/embed/christonmusic/song/doomsday" scrolling="no" width="100%" height="252" frameborder="0" title="Doomsday"></iframe>
-      </div>
-      <div class="embed-wrapper">
-        <iframe src="https://audiomack.com/embed/christonmusic/song/way-back-when" scrolling="no" width="100%" height="252" frameborder="0" title="Way Back When"></iframe>
-      </div>
-      <div class="embed-wrapper">
-        <iframe src="https://audiomack.com/embed/christonmusic/song/the-aftermath" scrolling="no" width="100%" height="252" frameborder="0" title="The Aftermath"></iframe>
-      </div>
-      <div class="embed-wrapper">
-        <iframe src="https://audiomack.com/embed/christonmusic/song/both-feet-in" scrolling="no" width="100%" height="252" frameborder="0" title="Both Feet In"></iframe>
-      </div>
-      <div class="embed-wrapper">
-        <iframe src="https://audiomack.com/embed/christonmusic/song/value-what-i-do" scrolling="no" width="100%" height="252" frameborder="0" title="Value What I Do"></iframe>
-      </div>
-      <div class="embed-wrapper">
-        <iframe src="https://audiomack.com/embed/christonmusic/song/this-morning" scrolling="no" width="100%" height="252" frameborder="0" title="This Morning"></iframe>
+    <div class="progress-container" id="progressContainer">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div class="time">
+      <span id="currentTime">0:00</span>
+      <span id="duration">0:00</span>
+    </div>
+
+    <div class="controls">
+      <div class="control-btn" id="shuffleBtn" title="Shuffle">🔀</div>
+      <div class="control-btn" id="prevBtn">⏮</div>
+      <div class="control-btn play-pause" id="playPauseBtn">▶</div>
+      <div class="control-btn" id="nextBtn">⏭</div>
+      <div class="control-btn" id="repeatBtn" title="Repeat">🔁</div>
+    </div>
+
+    <div class="volume-container">
+      <span>🔈</span>
+      <div class="volume-slider" id="volumeSlider">
+        <div class="volume-bar" id="volumeBar"></div>
       </div>
     </div>
+
+    <div class="tracklist" id="tracklist"></div>
   </div>
 </div>
+
+<audio id="audioPlayer"></audio>
+
+<script>
+  const audio = document.getElementById('audioPlayer');
+  const playPauseBtn = document.getElementById('playPauseBtn');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const shuffleBtn = document.getElementById('shuffleBtn');
+  const repeatBtn = document.getElementById('repeatBtn');
+  const progressContainer = document.getElementById('progressContainer');
+  const progressBar = document.getElementById('progressBar');
+  const currentTimeEl = document.getElementById('currentTime');
+  const durationEl = document.getElementById('duration');
+  const currentTitleEl = document.getElementById('currentTitle');
+  const tracklistEl = document.getElementById('tracklist');
+  const volumeSlider = document.getElementById('volumeSlider');
+  const volumeBar = document.getElementById('volumeBar');
+
+  // Replace these with real direct MP3 URLs (e.g. from Dropbox ?raw=1, Backblaze, etc.)
+  const tracks = [
+    { title: "Badman Intro", src: "https://cdn.discordapp.com/attachments/1465610715212550177/1465611074371059786/Badman_Intro.mp3" },
+    { title: "my lord ... i need you", src: "https://cdn.discordapp.com/attachments/1465610715212550177/1465611072982487082/my_lord_..._i_need_you.mp3" },
+    { title: "can you feel it", src: "https://cdn.discordapp.com/attachments/1465610715212550177/1465611073578205299/can_you_feel_it.mp3" },
+    { title: "this is me", src: "https://cdn.discordapp.com/attachments/1465610715212550177/1465610924734939177/this_is_me.mp3" },
+    { title: "the badman tracks", src: "https://cdn.discordapp.com/attachments/1465610715212550177/1465610924072112200/the_badman.mp3" },
+    { title: "can’t second guess", src: "https://cdn.discordapp.com/attachments/1465610715212550177/1465611073850704044/cant_second_guess.mp3" },
+    { title: "doomsday", src: "https://cdn.discordapp.com/attachments/1465610715212550177/1465611074102493246/doomsday.mp3" },
+    { title: "way back when", src: "https://cdn.discordapp.com/attachments/1465610715212550177/1465610925879984140/way_back_when.mp3" },
+    { title: "the aftermath", src: "https://cdn.discordapp.com/attachments/1465610715212550177/1465610925540376659/the_aftermath.mp3" },
+    { title: "both feet in", src: "https://cdn.discordapp.com/attachments/1465610715212550177/1465611072697532466/both_feet_in.mp3" },
+    { title: "value what i do", src: "https://cdn.discordapp.com/attachments/1465610715212550177/1465610925540376659/value_what_i_do.mp3" },
+    { title: "this morning", src: "https://cdn.discordapp.com/attachments/1465610715212550177/1465610925015830652/this_morning.mp3" }
+  ];
+
+  let currentTrack = 0;
+  let isPlaying = false;
+  let isShuffle = false;
+  let repeatMode = 'off'; // 'off' | 'one' | 'all'
+
+  // Populate tracklist
+  tracks.forEach((track, index) => {
+    const item = document.createElement('div');
+    item.className = 'track-item';
+    item.innerHTML = `
+      <span class="track-num">${index + 1}</span>
+      <span>${track.title}</span>
+      <span>...</span>
+    `;
+    item.addEventListener('click', () => {
+      currentTrack = index;
+      loadAndPlay();
+    });
+    tracklistEl.appendChild(item);
+  });
+
+  function loadAndPlay() {
+    audio.src = tracks[currentTrack].src;
+    audio.load();
+    currentTitleEl.textContent = tracks[currentTrack].title;
+
+    document.querySelectorAll('.track-item').forEach((el, i) => {
+      el.classList.toggle('current', i === currentTrack);
+    });
+
+    if (isPlaying) audio.play().catch(() => {});
+  }
+
+  function play() {
+    audio.play().catch(() => {});
+    playPauseBtn.textContent = '❚❚';
+    isPlaying = true;
+  }
+
+  function pause() {
+    audio.pause();
+    playPauseBtn.textContent = '▶';
+    isPlaying = false;
+  }
+
+  playPauseBtn.addEventListener('click', () => {
+    isPlaying ? pause() : play();
+  });
+
+  prevBtn.addEventListener('click', () => {
+    currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
+    loadAndPlay();
+    play();
+  });
+
+  nextBtn.addEventListener('click', () => {
+    currentTrack = (currentTrack + 1) % tracks.length;
+    loadAndPlay();
+    play();
+  });
+
+  shuffleBtn.addEventListener('click', () => {
+    isShuffle = !isShuffle;
+    shuffleBtn.style.color = isShuffle ? '#ffd700' : '#aaa';
+  });
+
+  repeatBtn.addEventListener('click', () => {
+    if (repeatMode === 'off') {
+      repeatMode = 'all';
+      repeatBtn.textContent = '🔁';
+      repeatBtn.style.color = '#ffd700';
+    } else if (repeatMode === 'all') {
+      repeatMode = 'one';
+      repeatBtn.textContent = '🔂';
+    } else {
+      repeatMode = 'off';
+      repeatBtn.textContent = '🔁';
+      repeatBtn.style.color = '#aaa';
+    }
+  });
+
+  audio.addEventListener('timeupdate', () => {
+    if (!audio.duration) return;
+    const progress = (audio.currentTime / audio.duration) * 100;
+    progressBar.style.width = `${progress}%`;
+
+    const curMin = Math.floor(audio.currentTime / 60);
+    const curSec = Math.floor(audio.currentTime % 60).toString().padStart(2,'0');
+    currentTimeEl.textContent = `${curMin}:${curSec}`;
+  });
+
+  audio.addEventListener('loadedmetadata', () => {
+    const durMin = Math.floor(audio.duration / 60);
+    const durSec = Math.floor(audio.duration % 60).toString().padStart(2,'0');
+    durationEl.textContent = `${durMin}:${durSec}`;
+  });
+
+  audio.addEventListener('ended', () => {
+    if (repeatMode === 'one') {
+      audio.currentTime = 0;
+      play();
+    } else if (repeatMode === 'all' || isShuffle) {
+      if (isShuffle) currentTrack = Math.floor(Math.random() * tracks.length);
+      else currentTrack = (currentTrack + 1) % tracks.length;
+      loadAndPlay();
+      play();
+    } else {
+      pause();
+    }
+  });
+
+  // Seek progress
+  progressContainer.addEventListener('click', (e) => {
+    const rect = progressContainer.getBoundingClientRect();
+    const pos = (e.clientX - rect.left) / rect.width;
+    audio.currentTime = pos * audio.duration;
+  });
+
+  // Volume slider
+  volumeSlider.addEventListener('click', (e) => {
+    const rect = volumeSlider.getBoundingClientRect();
+    const pos = (e.clientX - rect.left) / rect.width;
+    audio.volume = pos;
+    volumeBar.style.width = `${pos * 100}%`;
+  });
+
+  // Initial load
+  loadAndPlay();
+  audio.volume = 0.7;
+  volumeBar.style.width = '70%';
+</script>
 
 </body>
 </html>
