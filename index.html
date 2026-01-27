@@ -7,6 +7,7 @@
 
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
+
     body {
       background:#000;
       color:#e0e0e0;
@@ -17,230 +18,303 @@
       align-items:center;
       padding:20px;
       overflow-x:hidden;
+      position:relative;
+    }
+
+    .player-wrapper {
+      position:relative;
+      width:100%;
+      max-width:420px;
+      perspective:1400px;
     }
 
     .player-container {
       width:100%;
-      max-width:380px;
-      background:linear-gradient(145deg,#111,#0a0a0a);
-      border-radius:24px;
+      background:linear-gradient(145deg,#1c1c1c,#0b0b0b);
+      border-radius:32px;
       overflow:hidden;
-      box-shadow:0 30px 80px rgba(0,0,0,.9), inset 0 2px 8px rgba(255,255,255,.04), inset 0 -2px 8px rgba(0,0,0,.8);
-      border:1px solid #222;
+      box-shadow:
+        0 60px 140px rgba(0,0,0,0.95),
+        inset 0 6px 16px rgba(255,255,255,0.05),
+        inset 0 -6px 16px rgba(0,0,0,1),
+        0 0 0 2px rgba(255,255,255,0.03);
+      border:2px solid #151515;
+      transform-style:preserve-3d;
+      transform:rotateX(6deg) rotateY(4deg) scale(1.02);
+      transition:transform 0.6s ease;
+    }
+
+    .player-container:hover {
+      transform:rotateX(4deg) rotateY(3deg) scale(1.03);
     }
 
     .top-bar {
-      height:48px;
-      background:#1a1a1a;
-      border-bottom:1px solid #222;
+      height:54px;
+      background:linear-gradient(to bottom,#2a2a2a,#1a1a1a);
+      border-bottom:1px solid #111;
       display:flex;
       align-items:center;
       justify-content:center;
-      font-size:14px;
-      font-weight:600;
-      letter-spacing:1.5px;
+      font-size:15px;
+      font-weight:700;
+      letter-spacing:2px;
       color:#ffd700;
-      text-shadow:0 0 10px rgba(255,215,0,.3);
+      text-shadow:0 0 14px rgba(255,215,0,0.45);
+      position:relative;
     }
 
-    .screen {
-      padding:24px 20px 20px;
+    .top-bar::after {
+      content:"";
+      position:absolute;
+      inset:0;
+      background:radial-gradient(circle at 50% 0%, rgba(255,215,0,0.08), transparent 70%);
+      pointer-events:none;
+    }
+
+    .screen-area {
+      padding:32px 22px 28px;
       background:#000;
     }
 
     .album-art {
       width:100%;
       aspect-ratio:1/1;
-      background:#111;
-      border-radius:12px;
+      background:#0a0a0a;
+      border-radius:18px;
       overflow:hidden;
-      margin-bottom:20px;
-      box-shadow:inset 0 0 40px rgba(0,0,0,.8);
+      margin-bottom:28px;
+      box-shadow:
+        inset 0 0 80px rgba(0,0,0,0.95),
+        0 10px 40px rgba(0,0,0,0.8),
+        inset 0 2px 8px rgba(255,255,255,0.04);
+      position:relative;
     }
 
     .album-art img {
       width:100%;
       height:100%;
       object-fit:cover;
-      filter:brightness(.85) contrast(1.1);
+      filter:brightness(0.9) contrast(1.15);
     }
+
+    .album-art::before,
+    .album-art::after {
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+    }
+
+    .album-art::before { background:radial-gradient(circle at 30% 20%, rgba(255,215,0,0.12), transparent 60%); }
+    .album-art::after  { background:linear-gradient(to bottom, rgba(0,0,0,0.35), transparent 40%, rgba(0,0,0,0.45)); }
 
     .now-playing {
       text-align:center;
-      margin-bottom:20px;
+      margin-bottom:24px;
     }
 
     .track-title {
-      font-size:18px;
+      font-size:20px;
       font-weight:700;
-      margin-bottom:6px;
+      margin-bottom:8px;
       color:#fff;
+      text-shadow:0 0 12px rgba(255,215,0,0.2);
     }
 
     .track-artist {
-      font-size:14px;
+      font-size:15px;
       color:#aaa;
     }
 
     .progress-container {
-      height:4px;
-      background:#222;
-      border-radius:2px;
-      margin:16px 0;
+      height:6px;
+      background:#1a1a1a;
+      border-radius:3px;
+      margin:18px 0;
       cursor:pointer;
       overflow:hidden;
+      box-shadow:inset 0 1px 3px rgba(0,0,0,0.8);
     }
 
     .progress-bar {
       height:100%;
       width:0;
       background:linear-gradient(90deg,#ffd700,#ffeb3b);
-      border-radius:2px;
-      transition:width .2s linear;
+      border-radius:3px;
+      transition:width 0.15s linear;
+      box-shadow:0 0 12px rgba(255,215,0,0.6);
     }
 
     .time {
       display:flex;
       justify-content:space-between;
-      font-size:12px;
-      color:#888;
-      margin-bottom:20px;
+      font-size:13px;
+      color:#777;
+      margin-bottom:24px;
     }
 
     .controls {
       display:flex;
       justify-content:space-between;
       align-items:center;
-      padding:0 12px;
+      padding:0 16px;
     }
 
     .control-btn {
-      width:48px;
-      height:48px;
+      width:52px;
+      height:52px;
       border-radius:50%;
-      background:rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.12);
-      color:#fff;
-      font-size:20px;
+      background:linear-gradient(145deg,#222,#111);
+      border:1px solid #2a2a2a;
+      color:#e0e0e0;
+      font-size:22px;
       display:flex;
       align-items:center;
       justify-content:center;
       cursor:pointer;
-      transition:all .2s ease;
-      backdrop-filter:blur(10px);
+      transition:all 0.25s cubic-bezier(0.17,0.67,0.37,1.27);
+      box-shadow:0 4px 12px rgba(0,0,0,0.7), inset 0 1px 3px rgba(255,255,255,0.05);
+      position:relative;
+      overflow:hidden;
     }
 
     .control-btn:hover {
-      background:rgba(255,215,0,.15);
-      border-color:rgba(255,215,0,.4);
-      transform:scale(1.08);
-      box-shadow:0 0 20px rgba(255,215,0,.25);
+      transform:scale(1.12);
+      box-shadow:0 8px 24px rgba(255,215,0,0.3), inset 0 1px 4px rgba(255,215,0,0.15);
+      border-color:#ffd700;
+      color:#ffd700;
     }
 
-    .control-btn:active { transform:scale(.95); }
+    .control-btn:active { transform:scale(0.94); box-shadow:0 2px 8px rgba(0,0,0,0.6); }
 
     .play-pause {
-      width:64px;
-      height:64px;
-      font-size:28px;
+      width:70px;
+      height:70px;
+      font-size:32px;
       background:linear-gradient(145deg,#ffd700,#ffeb3b);
       color:#000;
-      box-shadow:0 8px 30px rgba(255,215,0,.4);
+      box-shadow:0 10px 40px rgba(255,215,0,0.5), inset 0 2px 6px rgba(255,255,255,0.4);
+      border:none;
     }
 
-    .play-pause:hover { box-shadow:0 12px 50px rgba(255,215,0,.6); }
+    .play-pause:hover { box-shadow:0 16px 60px rgba(255,215,0,0.7); }
 
     .volume-container {
       display:flex;
       align-items:center;
-      gap:12px;
-      margin-top:20px;
+      gap:14px;
+      margin-top:24px;
     }
 
     .volume-slider {
       flex:1;
-      height:4px;
-      background:#222;
-      border-radius:2px;
+      height:6px;
+      background:#1a1a1a;
+      border-radius:3px;
       cursor:pointer;
+      box-shadow:inset 0 1px 3px rgba(0,0,0,0.7);
     }
 
     .volume-bar {
       height:100%;
       width:70%;
       background:#ffd700;
-      border-radius:2px;
+      border-radius:3px;
+      box-shadow:0 0 12px rgba(255,215,0,0.5);
     }
 
     .tracklist {
-      margin-top:32px;
-      padding:0 12px 32px;
-      max-height:320px;
+      margin-top:36px;
+      padding:0 12px 40px;
+      max-height:360px;
       overflow-y:auto;
     }
 
     .track-item {
-      padding:12px 0;
+      padding:14px 0;
       border-bottom:1px solid #111;
       display:flex;
       justify-content:space-between;
       align-items:center;
-      font-size:14px;
+      font-size:15px;
       color:#aaa;
       cursor:pointer;
-      transition:color .2s;
+      transition:all 0.2s;
     }
 
     .track-item.current { color:#ffd700; font-weight:600; }
-    .track-item:hover { color:#fff; }
+    .track-item:hover { color:#fff; background:rgba(255,215,0,0.05); }
 
-    .track-num { width:24px; text-align:center; color:#666; }
+    .track-num { width:28px; text-align:center; color:#555; font-weight:600; }
 
     .tracklist::-webkit-scrollbar { width:6px; }
     .tracklist::-webkit-scrollbar-thumb { background:#333; border-radius:3px; }
+
+    .side-credit {
+      position:fixed;
+      bottom:20px;
+      right:20px;
+      font-size:13px;
+      color:#555;
+      opacity:0.7;
+      font-weight:500;
+      pointer-events:none;
+      text-align:right;
+      max-width:200px;
+    }
+
+    @media (max-width:480px) {
+      .side-credit { font-size:12px; right:12px; bottom:12px; }
+    }
   </style>
 </head>
 <body>
 
-<div class="player-container">
-  <div class="top-bar">BADMAN • CHRISTON</div>
+<div class="player-wrapper">
+  <div class="player-container">
+    <div class="top-bar">BADMAN • CHRISTON</div>
 
-  <div class="screen">
-    <div class="album-art">
-      <img src="https://i.ibb.co/KpyNrYD6/BADMAN-COVER-3.jpg" alt="BADMAN Album Cover">
-    </div>
-
-    <div class="now-playing">
-      <div class="track-title" id="currentTitle">Badman Intro</div>
-      <div class="track-artist">Christon</div>
-    </div>
-
-    <div class="progress-container" id="progressContainer">
-      <div class="progress-bar" id="progressBar"></div>
-    </div>
-
-    <div class="time">
-      <span id="currentTime">0:00</span>
-      <span id="duration">0:00</span>
-    </div>
-
-    <div class="controls">
-      <div class="control-btn" id="shuffleBtn" title="Shuffle">🔀</div>
-      <div class="control-btn" id="prevBtn">⏮</div>
-      <div class="control-btn play-pause" id="playPauseBtn">▶</div>
-      <div class="control-btn" id="nextBtn">⏭</div>
-      <div class="control-btn" id="repeatBtn" title="Repeat">🔁</div>
-    </div>
-
-    <div class="volume-container">
-      <span>🔈</span>
-      <div class="volume-slider" id="volumeSlider">
-        <div class="volume-bar" id="volumeBar"></div>
+    <div class="screen-area">
+      <div class="album-art">
+        <img src="https://i.ibb.co/KpyNrYD6/BADMAN-COVER-3.jpg" alt="BADMAN Album Cover">
       </div>
-    </div>
 
-    <div class="tracklist" id="tracklist"></div>
+      <div class="now-playing">
+        <div class="track-title" id="currentTitle">Badman Intro</div>
+        <div class="track-artist">Christon</div>
+      </div>
+
+      <div class="progress-container" id="progressContainer">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+
+      <div class="time">
+        <span id="currentTime">0:00</span>
+        <span id="duration">0:00</span>
+      </div>
+
+      <div class="controls">
+        <div class="control-btn" id="shuffleBtn" title="Shuffle">🔀</div>
+        <div class="control-btn" id="prevBtn">⏮</div>
+        <div class="control-btn play-pause" id="playPauseBtn">▶</div>
+        <div class="control-btn" id="nextBtn">⏭</div>
+        <div class="control-btn" id="repeatBtn" title="Repeat">🔁</div>
+      </div>
+
+      <div class="volume-container">
+        <span>🔈</span>
+        <div class="volume-slider" id="volumeSlider">
+          <div class="volume-bar" id="volumeBar"></div>
+        </div>
+      </div>
+
+      <div class="tracklist" id="tracklist"></div>
+    </div>
   </div>
+</div>
+
+<div class="side-credit">
+  PRODUCED & PERFORMED<br>BY CHRISTON
 </div>
 
 <audio id="audioPlayer"></audio>
@@ -261,26 +335,27 @@
   const volumeSlider = document.getElementById('volumeSlider');
   const volumeBar = document.getElementById('volumeBar');
 
-  // Replace these with real direct MP3 URLs (e.g. from Dropbox ?raw=1, Backblaze, etc.)
+  const baseUrl = "https://github.com/christonwords/Vanity/releases/download/1.0/";
+
   const tracks = [
-    { title: "Badman Intro", src: "https://cdn.discordapp.com/attachments/1465610715212550177/1465611074371059786/Badman_Intro.mp3" },
-    { title: "my lord ... i need you", src: "https://cdn.discordapp.com/attachments/1465610715212550177/1465611072982487082/my_lord_..._i_need_you.mp3" },
-    { title: "can you feel it", src: "https://cdn.discordapp.com/attachments/1465610715212550177/1465611073578205299/can_you_feel_it.mp3" },
-    { title: "this is me", src: "https://cdn.discordapp.com/attachments/1465610715212550177/1465610924734939177/this_is_me.mp3" },
-    { title: "the badman tracks", src: "https://cdn.discordapp.com/attachments/1465610715212550177/1465610924072112200/the_badman.mp3" },
-    { title: "can’t second guess", src: "https://cdn.discordapp.com/attachments/1465610715212550177/1465611073850704044/cant_second_guess.mp3" },
-    { title: "doomsday", src: "https://cdn.discordapp.com/attachments/1465610715212550177/1465611074102493246/doomsday.mp3" },
-    { title: "way back when", src: "https://cdn.discordapp.com/attachments/1465610715212550177/1465610925879984140/way_back_when.mp3" },
-    { title: "the aftermath", src: "https://cdn.discordapp.com/attachments/1465610715212550177/1465610925540376659/the_aftermath.mp3" },
-    { title: "both feet in", src: "https://cdn.discordapp.com/attachments/1465610715212550177/1465611072697532466/both_feet_in.mp3" },
-    { title: "value what i do", src: "https://cdn.discordapp.com/attachments/1465610715212550177/1465610925540376659/value_what_i_do.mp3" },
-    { title: "this morning", src: "https://cdn.discordapp.com/attachments/1465610715212550177/1465610925015830652/this_morning.mp3" }
+    { title: "Badman Intro", src: baseUrl + "Badman.Intro.mp3" },
+    { title: "my lord ... i need you", src: baseUrl + "my.lord....i.need.you.mp3" },
+    { title: "can you feel it", src: baseUrl + "can.you.feel.it.mp3" },
+    { title: "this is me", src: baseUrl + "this.is.me.mp3" },
+    { title: "the badman tracks", src: baseUrl + "the.badman.mp3" },
+    { title: "can’t second guess", src: baseUrl + "can.t.second.guess.mp3" },
+    { title: "doomsday", src: baseUrl + "doomsday.mp3" },
+    { title: "way back when", src: baseUrl + "way.back.when.mp3" },
+    { title: "the aftermath", src: baseUrl + "the.aftermath.mp3" },
+    { title: "both feet in", src: baseUrl + "both.feet.in.mp3" },
+    { title: "value what i do", src: baseUrl + "value.what.i.do.mp3" },
+    { title: "this morning", src: baseUrl + "this.morning.mp3" }
   ];
 
   let currentTrack = 0;
   let isPlaying = false;
   let isShuffle = false;
-  let repeatMode = 'off'; // 'off' | 'one' | 'all'
+  let repeatMode = 'off';
 
   // Populate tracklist
   tracks.forEach((track, index) => {
@@ -388,14 +463,12 @@
     }
   });
 
-  // Seek progress
   progressContainer.addEventListener('click', (e) => {
     const rect = progressContainer.getBoundingClientRect();
     const pos = (e.clientX - rect.left) / rect.width;
     audio.currentTime = pos * audio.duration;
   });
 
-  // Volume slider
   volumeSlider.addEventListener('click', (e) => {
     const rect = volumeSlider.getBoundingClientRect();
     const pos = (e.clientX - rect.left) / rect.width;
