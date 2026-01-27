@@ -1,660 +1,301 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>BADMAN • Christon</title>
+<meta charset="UTF-8">
+<title>CHRISTON</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    body {
-      background:#000;
-      color:#e0e0e0;
-      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
-      min-height:100vh;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      padding:16px;
-      overflow-x:hidden;
-      position:relative;
-    }
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
 
-    .player-wrapper {
-      position:relative;
-      width:100%;
-      max-width:420px;
-      perspective:1600px;
-    }
+body{
+  font-family:Inter,system-ui,sans-serif;
+  color:#fff;
+  background:black;
+  overflow-x:hidden;
+}
 
-    .player-container {
-      width:100%;
-      background:linear-gradient(145deg,#1e1e1e,#0c0c0c);
-      border-radius:32px;
-      overflow:hidden;
-      box-shadow:
-        0 60px 140px rgba(0,0,0,0.95),
-        inset 0 6px 16px rgba(255,255,255,0.06),
-        inset 0 -6px 16px rgba(0,0,0,1),
-        0 0 0 2px rgba(255,255,255,0.03);
-      border:3px solid #141414;
-      transform-style:preserve-3d;
-      transform:rotateX(6deg) rotateY(4deg) scale(1.02);
-      transition:transform 0.8s ease;
-    }
+video{
+  position:fixed;
+  top:0;left:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  z-index:-3;
+  filter:brightness(.4) contrast(110%);
+}
 
-    .player-container:hover {
-      transform:rotateX(4deg) rotateY(3deg) scale(1.04);
-    }
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  background-image:
+    repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0 2px,transparent 2px 4px),
+    repeating-linear-gradient(90deg,rgba(255,255,255,.015) 0 2px,transparent 2px 4px);
+  opacity:.12;
+  pointer-events:none;
+  z-index:-2;
+}
 
-    .top-bar {
-      height:54px;
-      background:linear-gradient(to bottom,#2e2e2e,#1e1e1e);
-      border-bottom:2px solid #0f0f0f;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:15px;
-      font-weight:700;
-      letter-spacing:2.5px;
-      color:#ffd700;
-      text-shadow:0 0 14px rgba(255,215,0,0.5);
-      position:relative;
-    }
+.wrap{
+  max-width:1200px;
+  margin:0 auto;
+  padding:64px 24px 140px;
+}
 
-    .led {
-      position:absolute;
-      left:16px;
-      width:12px;
-      height:12px;
-      background:#c00;
-      border-radius:50%;
-      box-shadow:0 0 12px #c00, inset 0 0 4px #900;
-      animation:led-pulse 3s ease-in-out infinite;
-    }
+.nav{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:110px;
+}
 
-    .led.playing {
-      background:#0c0;
-      box-shadow:0 0 12px #0c0, inset 0 0 4px #090;
-      animation:led-play 1.4s ease-in-out infinite;
-    }
+.brand{
+  font-weight:900;
+  letter-spacing:3px;
+  font-size:28px;
+}
 
-    @keyframes led-pulse { 0%,100% { opacity:0.6; transform:scale(1); } 50% { opacity:1; transform:scale(1.15); } }
-    @keyframes led-play   { 0%,100% { opacity:0.8; transform:scale(1); } 50% { opacity:1; transform:scale(1.2); } }
+.hero{max-width:760px}
 
-    .screen-area {
-      padding:32px 22px 28px;
-      background:#000;
-      position:relative;
-    }
+.pill{
+  display:inline-flex;
+  padding:10px 18px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.25);
+  background:rgba(255,255,255,.07);
+  font-size:14px;
+  margin-bottom:24px;
+}
 
-    .cassette-body {
-      position:relative;
-      width:100%;
-      aspect-ratio:1.8 / 1;
-      background:linear-gradient(145deg,#222,#111);
-      border-radius:16px;
-      margin-bottom:28px;
-      box-shadow:inset 0 0 60px rgba(0,0,0,0.9), 0 12px 48px rgba(0,0,0,0.8);
-      overflow:hidden;
-    }
+h1{
+  font-size:clamp(36px,7vw,68px);
+  line-height:1.05;
+  margin-bottom:18px;
+  font-weight:900;
+}
 
-    .reel-left, .reel-right {
-      position:absolute;
-      width:90px;
-      height:90px;
-      top:50%;
-      transform:translateY(-50%);
-      background:radial-gradient(circle at 40% 40%, #333, #222 60%, #1a1a1a);
-      border-radius:50%;
-      border:8px solid #2a2a2a;
-      box-shadow:inset 0 0 30px rgba(0,0,0,0.8), 0 0 20px rgba(255,215,0,0.15);
-      animation:spin-reel 18s linear infinite paused;
-    }
+.sub{
+  color:#cfd3ff;
+  font-size:18px;
+  max-width:540px;
+  margin-bottom:36px;
+}
 
-    .reel-left { left:10%; animation-direction:normal; }
-    .reel-right { right:10%; animation-direction:reverse; }
+.cta-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:16px;
+  margin-bottom:36px;
+}
 
-    .playing .reel-left, .playing .reel-right { animation-play-state:running; }
+.btn{
+  padding:14px 26px;
+  border-radius:14px;
+  font-weight:800;
+  border:2px solid #fff;
+  background:#fff;
+  color:black;
+  text-decoration:none;
+  transition:.2s;
+}
 
-    @keyframes spin-reel {
-      from { transform:translateY(-50%) rotate(0deg); }
-      to   { transform:translateY(-50%) rotate(360deg); }
-    }
+.btn.outline{
+  background:transparent;
+  color:white;
+}
 
-    .reel-hub {
-      position:absolute;
-      inset:20px;
-      background:#1a1a1a;
-      border-radius:50%;
-      box-shadow:inset 0 0 20px #000;
-    }
+.btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 15px 40px rgba(130,150,255,.35);
+}
 
-    .reel-tape {
-      position:absolute;
-      inset:0;
-      background:repeating-linear-gradient(45deg, #222, #222 4px, #1e1e1e 4px, #1e1e1e 8px);
-      border-radius:50%;
-      opacity:0.4;
-    }
+/* ✅ FIXED STATS */
+.float-cards{
+  display:grid;
+  gap:14px;
+  margin-top:24px;
+}
 
-    .album-art {
-      width:100%;
-      aspect-ratio:1/1;
-      background:#0a0a0a;
-      border-radius:16px;
-      overflow:hidden;
-      margin:24px 0;
-      box-shadow:inset 0 0 80px rgba(0,0,0,0.95), 0 12px 48px rgba(0,0,0,0.8);
-      position:relative;
-    }
+.stat-card{
+  padding:14px 16px;
+  border-radius:14px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.2);
+  font-size:14px;
+  backdrop-filter:blur(10px);
+}
 
-    .album-art img {
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      filter:brightness(0.9) contrast(1.15);
-    }
+/* Desktop float */
+@media(min-width:900px){
+  .float-cards{
+    position:absolute;
+    right:40px;
+    top:300px;
+    animation:float 6s ease-in-out infinite;
+  }
+}
 
-    .loading-overlay {
-      position:absolute;
-      inset:0;
-      background:rgba(0,0,0,0.8);
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      font-size:18px;
-      color:#aaa;
-      z-index:10;
-      opacity:0;
-      pointer-events:none;
-      transition:opacity 0.4s;
-    }
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-18px)}
+}
 
-    .loading-overlay.active { opacity:1; pointer-events:all; }
+.image-link{
+  display:block;
+  margin-top:48px;
+  max-width:360px;
+  border-radius:18px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.25);
+  transition:.2s;
+}
 
-    .loading-overlay button {
-      margin-top:12px;
-      padding:8px 16px;
-      background:#222;
-      border:1px solid #444;
-      color:#fff;
-      border-radius:6px;
-      cursor:pointer;
-    }
+.image-link img{
+  width:100%;
+  filter:grayscale(100%) contrast(110%);
+}
 
-    .now-playing {
-      text-align:center;
-      margin-bottom:24px;
-    }
+.image-link:hover{
+  transform:translateY(-4px);
+  box-shadow:0 25px 60px rgba(130,150,255,.25);
+}
 
-    .track-title {
-      font-size:20px;
-      font-weight:700;
-      margin-bottom:8px;
-      color:#fff;
-      text-shadow:0 0 12px rgba(255,215,0,0.2);
-    }
+.links{
+  margin-top:96px;
+  display:grid;
+  grid-template-columns:1fr;
+  gap:18px;
+  max-width:520px;
+}
 
-    .track-artist {
-      font-size:15px;
-      color:#aaa;
-    }
+.link{
+  text-decoration:none;
+  color:white;
+  padding:16px 20px;
+  border-radius:14px;
+  background:linear-gradient(135deg,rgba(255,255,255,.1),rgba(255,255,255,.02));
+  border:1px solid rgba(255,255,255,.2);
+  font-weight:800;
+  text-align:center;
+  transition:.2s;
+}
 
-    .progress-container {
-      height:6px;
-      background:#1a1a1a;
-      border-radius:3px;
-      margin:18px 0;
-      cursor:pointer;
-      overflow:hidden;
-      box-shadow:inset 0 1px 3px rgba(0,0,0,0.8);
-    }
+.link:hover{
+  background:linear-gradient(135deg,rgba(130,150,255,.35),rgba(255,255,255,.05));
+  transform:translateY(-2px);
+  box-shadow:0 20px 50px rgba(130,150,255,.25);
+}
 
-    .progress-bar {
-      height:100%;
-      width:0;
-      background:linear-gradient(90deg,#ffd700,#ffeb3b);
-      border-radius:3px;
-      transition:width 0.15s linear;
-      box-shadow:0 0 12px rgba(255,215,0,0.6);
-    }
+.footer{
+  margin-top:72px;
+  color:#aaa;
+  font-size:14px;
+  opacity:.85;
+}
 
-    .time {
-      display:flex;
-      justify-content:space-between;
-      font-size:13px;
-      color:#777;
-      margin-bottom:24px;
-    }
+/* ✅ LOADING INTRO */
+#loader{
+  position:fixed;
+  inset:0;
+  background:black;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:26px;
+  font-weight:900;
+  letter-spacing:4px;
+  z-index:99;
+  animation:fadeOut 1s ease forwards;
+  animation-delay:1.6s;
+}
 
-    .controls {
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      padding:0 16px;
-    }
+@keyframes fadeOut{
+  to{opacity:0;pointer-events:none}
+}
 
-    .control-btn {
-      width:52px;
-      height:52px;
-      border-radius:50%;
-      background:linear-gradient(145deg,#222,#111);
-      border:1px solid #2a2a2a;
-      color:#e0e0e0;
-      font-size:0;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      transition:all 0.25s cubic-bezier(0.17,0.67,0.37,1.27);
-      box-shadow:0 4px 12px rgba(0,0,0,0.7), inset 0 1px 3px rgba(255,255,255,0.05);
-      position:relative;
-      overflow:hidden;
-    }
+/* ✅ SCROLL REVEAL */
+.reveal{opacity:0;transform:translateY(20px);transition:.7s ease}
+.reveal.active{opacity:1;transform:none}
 
-    .control-btn svg {
-      width:28px;
-      height:28px;
-      fill:#e0e0e0;
-      transition:fill 0.25s;
-    }
-
-    .control-btn:hover {
-      transform:scale(1.12);
-      box-shadow:0 8px 24px rgba(255,215,0,0.3), inset 0 1px 4px rgba(255,215,0,0.15);
-      border-color:#ffd700;
-    }
-
-    .control-btn:hover svg { fill:#ffd700; }
-
-    .control-btn:active { transform:scale(0.94); box-shadow:0 2px 8px rgba(0,0,0,0.6); }
-
-    .play-pause {
-      width:70px;
-      height:70px;
-      background:linear-gradient(145deg,#ffd700,#ffeb3b);
-      box-shadow:0 10px 40px rgba(255,215,0,0.5), inset 0 2px 6px rgba(255,255,255,0.4);
-      border:none;
-    }
-
-    .play-pause svg { width:36px; height:36px; fill:#000; }
-
-    .volume-container {
-      display:flex;
-      align-items:center;
-      gap:14px;
-      margin-top:24px;
-    }
-
-    .volume-slider {
-      flex:1;
-      height:6px;
-      background:#1a1a1a;
-      border-radius:3px;
-      cursor:grab;
-      box-shadow:inset 0 1px 3px rgba(0,0,0,0.7);
-      position:relative;
-    }
-
-    .volume-bar {
-      height:100%;
-      width:70%;
-      background:#ffd700;
-      border-radius:3px;
-      box-shadow:0 0 12px rgba(255,215,0,0.5);
-    }
-
-    .tracklist {
-      margin-top:36px;
-      padding:0 12px 40px;
-      max-height:360px;
-      overflow-y:auto;
-    }
-
-    .track-item {
-      padding:14px 0;
-      border-bottom:1px solid #111;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      font-size:15px;
-      color:#aaa;
-      cursor:pointer;
-      transition:all 0.2s;
-    }
-
-    .track-item.current { color:#ffd700; font-weight:600; }
-    .track-item:hover { color:#fff; background:rgba(255,215,0,0.05); }
-
-    .track-num { width:28px; text-align:center; color:#555; font-weight:600; }
-
-    .tracklist::-webkit-scrollbar { width:6px; }
-    .tracklist::-webkit-scrollbar-thumb { background:#333; border-radius:3px; }
-
-    .side-credit {
-      position:fixed;
-      bottom:20px;
-      right:20px;
-      font-size:13px;
-      color:#555;
-      opacity:0.7;
-      font-weight:500;
-      pointer-events:none;
-      text-align:right;
-      max-width:240px;
-    }
-
-    @media (max-width:480px) {
-      .player-wrapper { max-width:360px; }
-      .player-container { transform:rotateX(4deg) rotateY(2deg) scale(1.01); }
-      .side-credit { font-size:12px; right:12px; bottom:12px; }
-    }
-  </style>
+@media(min-width:640px){
+  .links{grid-template-columns:1fr 1fr}
+}
+</style>
 </head>
 <body>
 
-<div class="player-wrapper">
-  <div class="player-container">
-    <div class="top-bar">
-      <div class="led" id="ledIndicator"></div>
-      BADMAN • CHRISTON
-    </div>
+<!-- ✅ VIDEO BACKGROUND -->
+<video autoplay muted loop playsinline>
+  <source src="background.mp4" type="video/mp4">
+</video>
 
-    <div class="screen-area">
-      <div class="cassette-body">
-        <div class="reel-left"><div class="reel-hub"></div><div class="reel-tape"></div></div>
-        <div class="reel-right"><div class="reel-hub"></div><div class="reel-tape"></div></div>
-      </div>
+<!-- ✅ LOADER -->
+<div id="loader">CHRISTON</div>
 
-      <div class="album-art">
-        <img src="https://i.ibb.co/KpyNrYD6/BADMAN-COVER-3.jpg" alt="BADMAN Album Cover">
-        <div class="loading-overlay" id="loadingOverlay">Loading track…</div>
-      </div>
+<div class="wrap">
 
-      <div class="now-playing">
-        <div class="track-title" id="currentTitle">Badman Intro</div>
-        <div class="track-artist">Christon</div>
-      </div>
+<div class="nav">
+  <div class="brand">CHRISTON</div>
+</div>
 
-      <div class="progress-container" id="progressContainer">
-        <div class="progress-bar" id="progressBar"></div>
-      </div>
+<section class="hero reveal">
+  <div class="pill">From The Dirt — Fully Produced & Performed By Christon</div>
 
-      <div class="time">
-        <span id="currentTime">0:00</span>
-        <span id="duration">0:00</span>
-      </div>
+  <h1>From The Dirt<br>Mixtape Out Now</h1>
 
-      <div class="controls">
-        <div class="control-btn" id="shuffleBtn" title="Shuffle">
-          <svg viewBox="0 0 24 24"><path d="M14 20v-2h2.586l-3.293-3.293 1.414-1.414L18 16.586V14h2v6h-6zM4 4v2H2.414l3.293 3.293-1.414 1.414L2 7.414V10H0V4h6zM20 4v6h-2V7.414l-3.293 3.293-1.414-1.414L16.586 6H14V4h6zM8 18H2v-2h4.586l3.293-3.293 1.414 1.414L7.414 18H8v2z"/></svg>
-        </div>
-        <div class="control-btn" id="prevBtn">
-          <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm4 6l10-6v12z"/></svg>
-        </div>
-        <div class="control-btn play-pause" id="playPauseBtn">
-          <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-          <svg id="pauseIcon" viewBox="0 0 24 24" style="display:none"><path d="M6 19h4V5H6zm8 0h4V5h-4z"/></svg>
-        </div>
-        <div class="control-btn" id="nextBtn">
-          <svg viewBox="0 0 24 24"><path d="M16 6h2v12h-2zm-4 6l-10-6v12z"/></svg>
-        </div>
-        <div class="control-btn" id="repeatBtn" title="Repeat">
-          <svg viewBox="0 0 24 24"><path d="M17 4l-5 5-1.5-1.5L15.5 2.5 17 4zm-5 14l5-5 1.5 1.5L12.5 21.5 12 20zM6 6h2v12H6zm10 0h2v12h-2z"/></svg>
-        </div>
-      </div>
+  <p class="sub">Producer & Artist. PEACE. CONTACT FOR BEATS OR BUSINESS.</p>
 
-      <div class="volume-container">
-        <span>🔈</span>
-        <div class="volume-slider" id="volumeSlider">
-          <div class="volume-bar" id="volumeBar"></div>
-        </div>
-      </div>
-
-      <div class="tracklist" id="tracklist"></div>
-    </div>
+  <div class="cta-row">
+    <a href="https://ffm.to/ftd" class="btn" target="_blank">Listen Now</a>
+    <a href="#links" class="btn outline">My Links</a>
   </div>
+
+  <div class="float-cards">
+    <div class="stat-card">150M+ Streams</div>
+    <div class="stat-card">120+ Drumkit Users</div>
+    <div class="stat-card">Freshman Out Now</div>
+  </div>
+</section>
+
+<a class="image-link reveal" href="https://payhip.com/b/rso1g" target="_blank">
+  <img src="drumkit.jpg" alt="Drumkit">
+</a>
+
+<!-- ✅ SPOTIFY EMBED -->
+<div class="reveal" style="margin-top:48px; max-width:560px;">
+  <iframe style="border-radius:18px"
+    src="https://open.spotify.com/album/3bZllb9TbaGwuXbsr37WIa?si=8gHzp25cRL-s_gchYn01Xg"
+    width="100%" height="152" frameborder="0"
+    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
+  </iframe>
 </div>
 
-<div class="side-credit">
-  PRODUCED & PERFORMED<br>BY CHRISTON<br>@christonwords • softparish@gmail.com
-</div>
+<section id="links" class="reveal">
+  <div class="links">
+    <a class="link" href="https://ffm.to/ftd" target="_blank">From The Dirt Mixtape</a>
+    <a class="link" href="https://www.beatstars.com/christonnn" target="_blank">BeatStars</a>
+    <a class="link" href="https://payhip.com/b/rso1g" target="_blank">Drumkit (The Son)</a>
+    <a class="link" href="https://www.instagram.com/christonwords/" target="_blank">Instagram</a>
+    <a class="link" href="https://www.tiktok.com/@christonwords" target="_blank">TikTok</a>
+    <a class="link" href="https://x.com/christonwords" target="_blank">X (Twitter)</a>
+  </div>
+</section>
 
-<audio id="audioPlayer" preload="auto" playsinline></audio>
+<div class="footer reveal">softparish@gmail.com</div>
+
+</div>
 
 <script>
-  const audio = document.getElementById('audioPlayer');
-  const playPauseBtn = document.getElementById('playPauseBtn');
-  const playIcon = document.getElementById('playIcon');
-  const pauseIcon = document.getElementById('pauseIcon');
-  const prevBtn = document.getElementById('prevBtn');
-  const nextBtn = document.getElementById('nextBtn');
-  const shuffleBtn = document.getElementById('shuffleBtn');
-  const repeatBtn = document.getElementById('repeatBtn');
-  const progressContainer = document.getElementById('progressContainer');
-  const progressBar = document.getElementById('progressBar');
-  const currentTimeEl = document.getElementById('currentTime');
-  const durationEl = document.getElementById('duration');
-  const currentTitleEl = document.getElementById('currentTitle');
-  const tracklistEl = document.getElementById('tracklist');
-  const volumeSlider = document.getElementById('volumeSlider');
-  const volumeBar = document.getElementById('volumeBar');
-  const ledIndicator = document.getElementById('ledIndicator');
-  const loadingOverlay = document.getElementById('loadingOverlay');
-
-  const baseUrl = "https://github.com/christonwords/Vanity/releases/download/1.0/";
-
-  const tracks = [
-    { title: "Badman Intro", src: baseUrl + "Badman.Intro.mp3" },
-    { title: "my lord ... i need you", src: baseUrl + "my.lord.i.need.you.mp3" },
-    { title: "can you feel it", src: baseUrl + "can.you.feel.it.mp3" },
-    { title: "this is me", src: baseUrl + "this.is.me.mp3" },
-    { title: "the badman tracks", src: baseUrl + "the.badman.mp3" },
-    { title: "can’t second guess", src: baseUrl + "can.t.second.guess.mp3" },
-    { title: "doomsday", src: baseUrl + "doomsday.mp3" },
-    { title: "way back when", src: baseUrl + "way.back.when.mp3" },
-    { title: "the aftermath", src: baseUrl + "the.aftermath.mp3" },
-    { title: "both feet in", src: baseUrl + "both.feet.in.mp3" },
-    { title: "value what i do", src: baseUrl + "value.what.i.do.mp3" },
-    { title: "this morning", src: baseUrl + "this.morning.mp3" }
-  ];
-
-  let currentTrack = 0;
-  let isPlaying = false;
-  let isShuffle = false;
-  let repeatMode = 'off';
-  let bufferingTimeout = null;
-  let retryCount = 0;
-  const maxRetries = 3;
-
-  // Populate tracklist
-  tracks.forEach((track, index) => {
-    const item = document.createElement('div');
-    item.className = 'track-item';
-    item.innerHTML = `
-      <span class="track-num">${index + 1}</span>
-      <span>${track.title}</span>
-      <span>...</span>
-    `;
-    item.addEventListener('click', () => {
-      currentTrack = index;
-      loadAndPlay();
-      play();
-    });
-    tracklistEl.appendChild(item);
+const reveals=document.querySelectorAll(".reveal");
+window.addEventListener("scroll",()=>{
+  reveals.forEach(el=>{
+    const top=el.getBoundingClientRect().top;
+    if(top<window.innerHeight-80) el.classList.add("active");
   });
-
-  function preloadNext() {
-    if (currentTrack + 1 < tracks.length) {
-      const nextAudio = new Audio();
-      nextAudio.src = tracks[currentTrack + 1].src;
-      nextAudio.preload = 'auto';
-    }
-  }
-
-  function loadAndPlay() {
-    if (retryCount >= maxRetries) {
-      loadingOverlay.innerHTML = "Failed to load after retries<br><button onclick='location.reload()'>Reload Page</button>";
-      return;
-    }
-    retryCount++;
-
-    loadingOverlay.classList.add('active');
-    loadingOverlay.innerHTML = `Loading track (attempt ${retryCount}/${maxRetries})…<br><button onclick='loadAndPlay()'>Retry</button>`;
-    audio.src = tracks[currentTrack].src;
-    audio.load();
-    currentTitleEl.textContent = tracks[currentTrack].title;
-
-    document.querySelectorAll('.track-item').forEach((el, i) => {
-      el.classList.toggle('current', i === currentTrack);
-    });
-
-    if (bufferingTimeout) clearTimeout(bufferingTimeout);
-
-    audio.onloadeddata = () => {
-      loadingOverlay.classList.remove('active');
-      retryCount = 0;
-      if (isPlaying) play();
-      preloadNext();
-    };
-
-    audio.onerror = () => {
-      loadingOverlay.innerHTML = "Error loading track<br><button onclick='loadAndPlay()'>Retry</button>";
-      console.error("Audio error:", audio.error);
-    };
-
-    audio.onwaiting = () => {
-      bufferingTimeout = setTimeout(() => {
-        if (isPlaying && audio.paused) {
-          loadingOverlay.innerHTML = "Buffering stalled…<br><button onclick='audio.play()'>Retry Play</button>";
-        }
-      }, 8000);
-    };
-
-    audio.onplaying = () => {
-      if (bufferingTimeout) clearTimeout(bufferingTimeout);
-      loadingOverlay.classList.remove('active');
-    };
-  }
-
-  function play() {
-    audio.play().catch(e => {
-      console.error("Play failed:", e);
-      loadingOverlay.innerHTML = "Playback error (may be browser policy or network)<br><button onclick='play()'>Retry</button>";
-    });
-    playIcon.style.display = 'none';
-    pauseIcon.style.display = 'block';
-    isPlaying = true;
-    ledIndicator.classList.add('playing');
-    document.querySelector('.player-container').classList.add('playing');
-  }
-
-  function pause() {
-    audio.pause();
-    playIcon.style.display = 'block';
-    pauseIcon.style.display = 'none';
-    isPlaying = false;
-    ledIndicator.classList.remove('playing');
-    document.querySelector('.player-container').classList.remove('playing');
-  }
-
-  playPauseBtn.addEventListener('click', () => {
-    isPlaying ? pause() : play();
-  });
-
-  prevBtn.addEventListener('click', () => {
-    currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
-    loadAndPlay();
-    play();
-  });
-
-  nextBtn.addEventListener('click', () => {
-    currentTrack = (currentTrack + 1) % tracks.length;
-    loadAndPlay();
-    play();
-  });
-
-  shuffleBtn.addEventListener('click', () => {
-    isShuffle = !isShuffle;
-    shuffleBtn.style.color = isShuffle ? '#ffd700' : '#aaa';
-  });
-
-  repeatBtn.addEventListener('click', () => {
-    if (repeatMode === 'off') {
-      repeatMode = 'all';
-      repeatBtn.style.color = '#ffd700';
-    } else if (repeatMode === 'all') {
-      repeatMode = 'one';
-    } else {
-      repeatMode = 'off';
-      repeatBtn.style.color = '#aaa';
-    }
-  });
-
-  audio.addEventListener('timeupdate', () => {
-    if (!audio.duration) return;
-    const progress = (audio.currentTime / audio.duration) * 100;
-    progressBar.style.width = `${progress}%`;
-
-    const curMin = Math.floor(audio.currentTime / 60);
-    const curSec = Math.floor(audio.currentTime % 60).toString().padStart(2,'0');
-    currentTimeEl.textContent = `${curMin}:${curSec}`;
-  });
-
-  audio.addEventListener('loadedmetadata', () => {
-    const durMin = Math.floor(audio.duration / 60);
-    const durSec = Math.floor(audio.duration % 60).toString().padStart(2,'0');
-    durationEl.textContent = `${durMin}:${durSec}`;
-  });
-
-  audio.addEventListener('ended', () => {
-    if (repeatMode === 'one') {
-      audio.currentTime = 0;
-      play();
-    } else {
-      if (isShuffle) currentTrack = Math.floor(Math.random() * tracks.length);
-      else currentTrack = (currentTrack + 1) % tracks.length;
-      loadAndPlay();
-      play();
-    }
-  });
-
-  progressContainer.addEventListener('click', (e) => {
-    const rect = progressContainer.getBoundingClientRect();
-    const pos = (e.clientX - rect.left) / rect.width;
-    audio.currentTime = pos * audio.duration;
-  });
-
-  // Drag volume
-  let isDraggingVolume = false;
-
-  const updateVolume = (e) => {
-    if (!isDraggingVolume) return;
-    e.preventDefault();
-    const rect = volumeSlider.getBoundingClientRect();
-    let clientX = e.clientX || (e.touches && e.touches[0].clientX);
-    let pos = (clientX - rect.left) / rect.width;
-    pos = Math.max(0, Math.min(1, pos));
-    audio.volume = pos;
-    volumeBar.style.width = `${pos * 100}%`;
-  };
-
-  volumeSlider.addEventListener('mousedown', (e) => { isDraggingVolume = true; updateVolume(e); });
-  volumeSlider.addEventListener('touchstart', (e) => { isDraggingVolume = true; updateVolume(e); }, { passive:false });
-
-  document.addEventListener('mousemove', updateVolume);
-  document.addEventListener('touchmove', updateVolume, { passive:false });
-
-  document.addEventListener('mouseup', () => isDraggingVolume = false);
-  document.addEventListener('touchend', () => isDraggingVolume = false);
-
-  // Initial load
-  loadAndPlay();
-  audio.volume = 0.7;
-  volumeBar.style.width = '70%';
+});
 </script>
 
 </body>
