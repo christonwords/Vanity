@@ -3,155 +3,310 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website Under Construction</title>
+    <title>Prosper Drumkit</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            background-color: black;
+        :root {
+            --bg-start: #0f071a;
+            --bg-end: #0a0a1f;
+            --glass: rgba(30, 30, 60, 0.28);
+            --glass-border: rgba(120, 120, 180, 0.22);
+            --text: #f1f5f9;
+            --text-muted: #c7d2fe;
+            --accent: #7c3aed;
+            --accent-glow: #a78bfa;
+        }
+
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: 'SF Pro Display', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(145deg, var(--bg-start), var(--bg-end));
+            color: var(--text);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Liquid glass background layers */
+        .liquid-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -4;
+            background: 
+                radial-gradient(ellipse at 20% 30%, rgba(124,58,237,0.18) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(167,139,250,0.15) 0%, transparent 55%);
+            pointer-events: none;
+        }
+
+        .blobs {
+            position: fixed;
+            inset: 0;
+            z-index: -3;
+            filter: blur(120px) brightness(1.1);
+            opacity: 0.48;
+            mix-blend-mode: screen;
+        }
+
+        .blob {
+            position: absolute;
+            background: conic-gradient(from 90deg at 50% 50%, #7c3aed, #a78bfa, #c4b5fd, #7c3aed);
+            border-radius: 45% 55% 50% 50% / 40% 60% 55% 45%;
+            animation: deepLiquid 45s infinite cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: center;
+        }
+
+        .blob:nth-child(1) { width: 950px; height: 950px; top: -28%; left: -22%; animation-delay: 0s; }
+        .blob:nth-child(2) { width: 1300px; height: 1300px; bottom: -32%; right: -28%; animation-delay: 18s; }
+        .blob:nth-child(3) { width: 900px; height: 900px; top: 48%; left: 58%; animation-delay: 32s; }
+
+        @keyframes deepLiquid {
+            0%, 100%   { border-radius: 45% 55% 50% 50% / 40% 60% 55% 45%; transform: translate(0,0) rotate(0deg) scale(1); }
+            25%        { border-radius: 35% 65% 40% 60% / 60% 35% 65% 40%; transform: translate(16%,10%) rotate(7deg) scale(1.07); }
+            50%        { border-radius: 65% 35% 70% 30% / 30% 70% 35% 65%; transform: translate(-14%,20%) rotate(-9deg) scale(0.96); }
+            75%        { border-radius: 50% 50% 45% 55% / 55% 45% 50% 50%; transform: translate(12%,-16%) rotate(5deg) scale(1.05); }
+        }
+
+        .grain {
+            position: fixed;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.065'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.7;
+        }
+
+        .container {
+            min-height: 100vh;
             display: flex;
-            justify-content: center;
             align-items: center;
-            height: 100vh;
-            font-family: monospace;
-            color: #00ffff;
-            text-align: center;
+            justify-content: center;
+            padding: 5rem 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            max-width: 1600px;
+            width: 100%;
+        }
+
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(40px) saturate(180%);
+            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            border-radius: 2.5rem;
+            padding: 4.5rem 3.5rem;
+            box-shadow: 0 30px 90px rgba(0,0,0,0.55),
+                        inset 0 2px 1px rgba(255,255,255,0.08);
+            transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+            opacity: 0;
+            transform: translateY(80px);
+        }
+
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card:hover {
+            transform: translateY(-1.5rem);
+            box-shadow: 0 60px 140px rgba(0,0,0,0.7),
+                        inset 0 2px 1px rgba(255,255,255,0.12);
+        }
+
+        h1 {
+            font-size: clamp(3.2rem, 6vw, 5.2rem);
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(90deg, #f1f5f9, #e0f2fe, #c7d2fe, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 300% auto;
+            animation: shine 12s linear infinite;
+        }
+
+        @keyframes shine {
+            to { background-position: 300% center; }
+        }
+
+        p, ul {
+            font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+            line-height: 1.7;
+            color: var(--text-muted);
+        }
+
+        ul {
+            margin: 2rem 0;
+            list-style: none;
+        }
+
+        li {
+            margin: 1.2rem 0;
+            position: relative;
+            padding-left: 2.2rem;
+        }
+
+        li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--accent-glow);
+            font-size: 1.6rem;
+            line-height: 1;
+        }
+
+        .buy-btn {
+            display: inline-block;
+            margin-top: 2.8rem;
+            padding: 1.2rem 3.5rem;
+            background: linear-gradient(135deg, var(--accent), #9f7aea, #7c3aed);
+            color: white;
+            font-size: clamp(1.15rem, 2.8vw, 1.4rem);
+            font-weight: 600;
+            border-radius: 999px;
+            text-decoration: none;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: 0 12px 40px rgba(124,58,237,0.4);
+            position: relative;
             overflow: hidden;
         }
-        #container {
-            position: relative;
-            width: 100%;
-            max-width: 800px;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+
+        .buy-btn:hover {
+            transform: translateY(-0.5rem);
+            box-shadow: 0 24px 70px rgba(124,58,237,0.6);
         }
-        #animation {
-            width: 100%;
-            height: auto;
-            max-height: 50vh;
+
+        .buy-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -100%;
+            width: 50%;
+            height: 200%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+            transition: left 0.8s ease;
         }
-        path, circle, line, text {
-            stroke: #00ffff;
-            fill: none;
-            stroke-width: 1.5;
+
+        .buy-btn:hover::after {
+            left: 100%;
         }
-        @keyframes draw {
-            to {
-                stroke-dashoffset: 0;
+
+        /* Mobile responsive adjustments */
+        @media (max-width: 1100px) {
+            .content {
+                grid-template-columns: 1fr;
+                gap: 4rem;
+            }
+
+            .card {
+                padding: 3.8rem 2.8rem;
+            }
+
+            h1 {
+                font-size: clamp(2.8rem, 8vw, 4.2rem);
             }
         }
-        .text-container {
-            margin-top: 20px;
-            opacity: 0;
-            animation: fadeIn 1s ease-in forwards 5s;
-        }
-        h1 {
-            font-size: 2.5em;
-            margin: 0;
-        }
-        p {
-            font-size: 1.2em;
-            margin: 10px 0 0;
-        }
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 4rem 1.2rem;
             }
-        }
-        /* Enhanced glow filter */
-        #glow {
-            filter: url(#glow-filter);
+
+            .card {
+                padding: 3rem 2rem;
+                border-radius: 2rem;
+            }
+
+            .buy-btn {
+                padding: 1rem 2.8rem;
+                width: 100%;
+                text-align: center;
+            }
         }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 </head>
 <body>
-    <div id="container">
-        <svg id="animation" viewBox="0 0 1000 600" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-                <filter id="glow-filter">
-                    <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur1"/>
-                    <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur2"/>
-                    <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur3"/>
-                    <feMerge>
-                        <feMergeNode in="blur1"/>
-                        <feMergeNode in="blur2"/>
-                        <feMergeNode in="blur3"/>
-                        <feMergeNode in="SourceGraphic"/>
-                    </feMerge>
-                </filter>
-            </defs>
-            <g id="glow">
-                <!-- Top left ≡ with dots -->
-                <text x="100" y="50" font-size="40" stroke-width="2">≡</text>
-                <circle cx="200" cy="45" r="3" />
-                <circle cx="220" cy="45" r="2" />
-                <!-- Top right ≡ with dots -->
-                <text x="850" y="50" font-size="40" stroke-width="2">≡</text>
-                <circle cx="800" cy="45" r="3" />
-                <circle cx="780" cy="45" r="2" />
-                <!-- Central structure -->
-                <circle cx="500" cy="300" r="20" />
-                <circle cx="500" cy="300" r="40" />
-                <circle cx="500" cy="300" r="60" stroke-dasharray="5 5" />
-                <!-- Radiating curves - left side -->
-                <path d="M500 300 Q400 200 300 300" />
-                <path d="M500 300 Q400 150 250 250" />
-                <path d="M500 300 Q350 100 200 200" />
-                <path d="M500 300 Q450 100 150 150" />
-                <path d="M500 300 Q300 50 100 100" />
-                <!-- Radiating curves - right side -->
-                <path d="M500 300 Q600 200 700 300" />
-                <path d="M500 300 Q600 150 750 250" />
-                <path d="M500 300 Q650 100 800 200" />
-                <path d="M500 300 Q550 100 850 150" />
-                <path d="M500 300 Q700 50 900 100" />
-                <!-- Circles at intersections -->
-                <circle cx="400" cy="200" r="10" />
-                <circle cx="300" cy="300" r="8" />
-                <circle cx="250" cy="250" r="6" />
-                <circle cx="200" cy="200" r="5" />
-                <circle cx="150" cy="150" r="4" />
-                <circle cx="100" cy="100" r="3" />
-                <circle cx="600" cy="200" r="10" />
-                <circle cx="700" cy="300" r="8" />
-                <circle cx="750" cy="250" r="6" />
-                <circle cx="800" cy="200" r="5" />
-                <circle cx="850" cy="150" r="4" />
-                <circle cx="900" cy="100" r="3" />
-                <!-- Spikes / feathers -->
-                <line x1="300" y1="300" x2="250" y2="350" />
-                <line x1="300" y1="300" x2="350" y2="350" />
-                <line x1="250" y1="250" x2="200" y2="300" />
-                <line x1="250" y1="250" x2="300" y2="200" />
-                <line x1="200" y1="200" x2="150" y2="250" />
-                <line x1="200" y1="200" x2="250" y2="150" />
-                <!-- Mirror right -->
-                <line x1="700" y1="300" x2="750" y2="350" />
-                <line x1="700" y1="300" x2="650" y2="350" />
-                <line x1="750" y1="250" x2="800" y2="300" />
-                <line x1="750" y1="250" x2="700" y2="200" />
-                <line x1="800" y1="200" x2="850" y2="250" />
-                <line x1="800" y1="200" x2="750" y2="150" />
-            </g>
-        </svg>
-        <div class="text-container">
-            <h1>Website Under Construction</h1>
-            <p>DM on Instagram @christonwords or email softparish@gmail.com for business</p>
+    <div class="liquid-bg"></div>
+    <div class="blobs">
+        <div class="blob"></div>
+        <div class="blob"></div>
+        <div class="blob"></div>
+    </div>
+    <div class="grain"></div>
+
+    <div class="container">
+        <div class="content">
+            <div class="card contact">
+                <h1>Contact for Beats</h1>
+                <p>For beats DM me on Instagram <strong>@christonwords</strong> or email <strong>softparish@gmail.com</strong></p>
+            </div>
+
+            <div class="card drumkit">
+                <h1>Prosper Drumkit</h1>
+                <p><strong>ALL CUSTOM SOUNDS.</strong> Real trap / Crunk.</p>
+                <ul>
+                    <li>808s - 7</li>
+                    <li>Crashes - 3</li>
+                    <li>Hihats - 5</li>
+                    <li>Kicks - 5</li>
+                    <li>Openhats - 10</li>
+                    <li>Percs - 5</li>
+                    <li>Snares - 10</li>
+                    <li>Vox - 7</li>
+                </ul>
+                <a href="https://payhip.com/b/HqM5w" target="_blank" class="buy-btn">Buy on Payhip</a>
+            </div>
         </div>
     </div>
+
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const elements = document.querySelectorAll('path, circle, line, text');
-            let delay = 0;
-            elements.forEach(el => {
-                const length = el.getTotalLength ? el.getTotalLength() : 0;
-                el.style.strokeDasharray = length;
-                el.style.strokeDashoffset = length;
-                el.style.animation = `draw 2s linear forwards ${delay}s`;
-                delay += 0.05; // Smoother sequential drawing
+        // Entrance animation
+        gsap.utils.toArray('.card').forEach((card, i) => {
+            gsap.to(card, {
+                opacity: 1,
+                y: 0,
+                duration: 1.5,
+                ease: "power4.out",
+                delay: i * 0.4,
+                onStart: () => card.classList.add('visible')
+            });
+        });
+
+        // Interactive tilt
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = (e.clientX - rect.left - rect.width / 2) / 22;
+                const y = (e.clientY - rect.top - rect.height / 2) / 22;
+
+                gsap.to(card, {
+                    rotationY: x,
+                    rotationX: -y,
+                    ease: "power2.out",
+                    duration: 0.6
+                });
+            });
+
+            card.addEventListener('mouseleave', () => {
+                gsap.to(card, {
+                    rotationY: 0,
+                    rotationX: 0,
+                    ease: "elastic.out(1, 0.4)",
+                    duration: 1
+                });
             });
         });
     </script>
