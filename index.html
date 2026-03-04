@@ -54,7 +54,9 @@
         /* --- UI OVERLAY --- */
         .interface {
             position: relative; z-index: 10;
-            width: 100%; height: 100vh;
+            width: 100%; 
+            height: 100vh; /* Fallback */
+            height: 100dvh; /* Fixes mobile browser UI bar cutoff */
             display: flex; flex-direction: column;
             pointer-events: none;
             box-sizing: border-box;
@@ -138,7 +140,7 @@
 
         <div class="contact-container">
             <div class="contact-list">
-                <a href="softparish@gmail.com" class="contact-item">
+                <a href="mailto:softparish@gmail.com" class="contact-item">
                     <span class="item-title scramble" data-value="EMAIL">EMAIL</span>
                     <span class="item-label">SECURE_INBOX</span>
                 </a>
@@ -248,7 +250,8 @@
                 },
                 vertexShader: document.getElementById('vertexShader').textContent,
                 fragmentShader: document.getElementById('fragmentShader').textContent,
-                depthWrite: false
+                depthWrite: false,
+                extensions: { derivatives: true } // FIX: Prevents crash on iOS/Safari and older devices
             });
             const bgMesh = new THREE.Mesh(bgGeometry, bgMaterial);
             bgMesh.position.z = -5; scene.add(bgMesh);
@@ -258,7 +261,6 @@
             coreMesh = new THREE.Mesh(coreGeometry, coreMaterial); scene.add(coreMesh);
 
             renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('shader-canvas'), antialias: true });
-            // Cap pixel ratio for mobile performance
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
             onWindowResize();
 
@@ -267,11 +269,12 @@
             // Mouse Events
             window.addEventListener('mousemove', (e) => updateMouse(e.clientX, e.clientY));
             
-            // Touch Events for Mobile
+            // Touch Events for Mobile (FIX: Added touchstart for immediate response)
+            window.addEventListener('touchstart', (e) => {
+                if(e.touches.length > 0) updateMouse(e.touches[0].clientX, e.touches[0].clientY);
+            }, { passive: true });
             window.addEventListener('touchmove', (e) => {
-                if(e.touches.length > 0) {
-                    updateMouse(e.touches[0].clientX, e.touches[0].clientY);
-                }
+                if(e.touches.length > 0) updateMouse(e.touches[0].clientX, e.touches[0].clientY);
             }, { passive: true });
 
             animateScene();
@@ -313,7 +316,6 @@
         let cursorX = window.innerWidth / 2, cursorY = window.innerHeight / 2;
         let glassX = cursorX, glassY = cursorY;
 
-        // Only run custom cursor logic if it's not a touch device
         if (window.matchMedia("(pointer: fine)").matches) {
             window.addEventListener('mousemove', (e) => {
                 cursorX = e.clientX; cursorY = e.clientY;
@@ -333,7 +335,7 @@
             });
         }
 
-        // Cyberpunk Text Scramble Effect
+        // Cyberpunk Text Scramble Effect (FIX: Added mouseleave reset)
         const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*";
         document.querySelectorAll('.scramble').forEach(el => {
             el.addEventListener('mouseenter', event => {
@@ -345,9 +347,17 @@
                             if(index < iterations) return originalText[index];
                             return letters[Math.floor(Math.random() * letters.length)];
                         }).join("");
-                    if(iterations >= originalText.length) clearInterval(el.interval);
+                    if(iterations >= originalText.length) {
+                        clearInterval(el.interval);
+                        event.target.innerText = originalText;
+                    }
                     iterations += 1 / 3;
                 }, 30);
+            });
+            
+            el.addEventListener('mouseleave', event => {
+                clearInterval(el.interval);
+                event.target.innerText = event.target.dataset.value;
             });
         });
     </script>
